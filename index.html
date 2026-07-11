@@ -1,0 +1,822 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bangladesh Apparel Passport — Beyond the Stitch</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --navy:#070B26;
+  --indigo:#11183A;
+  --blue:#4F7BFF;
+  --violet:#785BFF;
+  --cyan:#6EEBFF;
+  --white:#FFFFFF;
+  --grey:#C7CFDD;
+  --border:rgba(111,143,255,0.16);
+  --card:rgba(17,24,58,0.55);
+  --font-display:'Space Grotesk',sans-serif;
+  --font-body:'Inter',sans-serif;
+  --font-mono:'JetBrains Mono',monospace;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{
+  background:var(--navy);
+  color:var(--white);
+  font-family:var(--font-body);
+  overflow-x:hidden;
+  -webkit-font-smoothing:antialiased;
+}
+@media (prefers-reduced-motion: reduce){
+  *{animation-duration:.001ms !important;animation-iteration-count:1 !important;transition-duration:.001ms !important;scroll-behavior:auto !important;}
+}
+::selection{background:var(--blue);color:var(--white);}
+
+/* ambient background glow */
+.glow-field{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden;}
+.glow{position:absolute;border-radius:50%;filter:blur(120px);opacity:.35;}
+.glow.g1{width:600px;height:600px;background:var(--blue);top:-10%;left:-10%;}
+.glow.g2{width:500px;height:500px;background:var(--violet);bottom:10%;right:-5%;}
+.glow.g3{width:450px;height:450px;background:var(--cyan);top:40%;left:60%;opacity:.15;}
+
+section, header, footer{position:relative;z-index:1;}
+
+.eyebrow{
+  font-family:var(--font-mono);
+  font-size:.72rem;
+  letter-spacing:.22em;
+  text-transform:uppercase;
+  color:var(--cyan);
+  display:inline-flex;
+  align-items:center;
+  gap:.6rem;
+}
+.eyebrow::before{content:'';width:18px;height:1px;background:var(--cyan);display:inline-block;}
+
+h1,h2,h3{font-family:var(--font-display);font-weight:600;letter-spacing:-.02em;}
+p{color:var(--grey);line-height:1.65;font-weight:300;}
+.mono{font-family:var(--font-mono);}
+
+.container{max-width:1180px;margin:0 auto;padding:0 6vw;}
+.section-pad{padding:min(14vh,140px) 0;}
+
+/* nav */
+.topnav{
+  position:fixed;top:0;left:0;right:0;z-index:100;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:1.4rem 6vw;
+  backdrop-filter:blur(16px);
+  background:linear-gradient(to bottom, rgba(7,11,38,.85), rgba(7,11,38,0));
+  transition:background .3s ease;
+}
+.brand{display:flex;align-items:center;gap:.6rem;font-family:var(--font-mono);font-size:.8rem;letter-spacing:.08em;}
+.brand .dot{width:8px;height:8px;border-radius:50%;background:var(--cyan);box-shadow:0 0 10px var(--cyan);}
+.nav-cta{
+  font-family:var(--font-mono);font-size:.72rem;letter-spacing:.05em;
+  padding:.6rem 1.2rem;border-radius:999px;
+  border:1px solid var(--border);
+  color:var(--white);background:rgba(255,255,255,.03);
+  cursor:pointer;transition:all .25s ease;
+}
+.nav-cta:hover{border-color:var(--blue);box-shadow:0 0 20px rgba(79,123,255,.35);}
+
+/* progress rail */
+.rail{
+  position:fixed;right:2.2rem;top:50%;transform:translateY(-50%);
+  z-index:90;display:flex;flex-direction:column;gap:14px;
+}
+.rail .node{width:6px;height:6px;border-radius:50%;background:rgba(199,207,221,.3);transition:all .3s ease;cursor:pointer;}
+.rail .node.active{background:var(--cyan);box-shadow:0 0 10px var(--cyan);height:22px;border-radius:4px;}
+@media (max-width:900px){.rail{display:none;}}
+
+/* buttons */
+.btn{
+  font-family:var(--font-mono);font-size:.8rem;letter-spacing:.03em;
+  padding:1rem 2rem;border-radius:999px;border:none;cursor:pointer;
+  display:inline-flex;align-items:center;gap:.6rem;
+  transition:transform .25s ease, box-shadow .25s ease;
+}
+.btn-primary{
+  background:linear-gradient(120deg,var(--blue),var(--violet));
+  color:var(--white);
+}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:0 10px 40px rgba(79,123,255,.45);}
+.btn-ghost{
+  border:1px solid var(--border);color:var(--white);background:rgba(255,255,255,.02);
+}
+.btn-ghost:hover{border-color:var(--cyan);color:var(--cyan);}
+
+/* reveal */
+.reveal{opacity:0;transform:translateY(28px);transition:opacity .9s cubic-bezier(.16,.8,.24,1), transform .9s cubic-bezier(.16,.8,.24,1);}
+.reveal.in{opacity:1;transform:translateY(0);}
+.reveal-delay-1{transition-delay:.1s;}
+.reveal-delay-2{transition-delay:.2s;}
+.reveal-delay-3{transition-delay:.3s;}
+
+/* ===== HERO ===== */
+.hero{min-height:100vh;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding-top:6rem;}
+.hero .stamp{
+  font-family:var(--font-mono);font-size:.72rem;letter-spacing:.3em;color:var(--grey);
+  border:1px solid var(--border);padding:.5rem 1.1rem;border-radius:999px;margin-bottom:2.6rem;
+}
+.hero-title{position:relative;}
+.country-label{
+  display:block;font-family:var(--font-mono);font-weight:500;
+  font-size:clamp(.85rem,1.6vw,1.05rem);letter-spacing:.7em;
+  color:var(--cyan);margin-bottom:1.4rem;margin-left:.7em; /* offsets the extra tracking */
+  text-shadow:0 0 24px rgba(110,235,255,.5);
+}
+.hero h1{
+  font-size:clamp(3.2rem,9vw,7.6rem);line-height:.98;font-weight:700;
+  letter-spacing:-.035em;max-width:18ch;position:relative;
+}
+.hero h1 .line{
+  display:block;
+  background:linear-gradient(100deg,#fff 15%, var(--cyan) 45%, var(--violet) 65%, #fff 85%);
+  background-size:250% 100%;
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+  animation:shine 7s linear infinite;
+}
+@keyframes shine{0%{background-position:0% 50%;}100%{background-position:250% 50%;}}
+.hero-rule{
+  width:64px;height:2px;margin:2.2rem auto 0;
+  background:linear-gradient(90deg,var(--blue),var(--violet));
+  box-shadow:0 0 16px rgba(79,123,255,.7);
+}
+.hero .sub{max-width:34ch;margin:1.8rem auto 3rem;font-size:1.08rem;}
+.hero .cta-row{display:flex;gap:1rem;flex-wrap:wrap;justify-content:center;}
+.scroll-ind{margin-top:5rem;display:flex;flex-direction:column;align-items:center;gap:.6rem;color:var(--grey);font-family:var(--font-mono);font-size:.68rem;letter-spacing:.15em;}
+.scroll-ind .line{width:1px;height:38px;background:linear-gradient(var(--cyan),transparent);animation:scrolldown 1.8s ease-in-out infinite;}
+@keyframes scrolldown{0%{transform:scaleY(0);transform-origin:top;}50%{transform:scaleY(1);transform-origin:top;}50.01%{transform-origin:bottom;}100%{transform:scaleY(0);transform-origin:bottom;}}
+
+/* ===== SECTION HEADS ===== */
+.s-head{margin-bottom:3.5rem;max-width:640px;}
+.s-head h2{font-size:clamp(1.8rem,4vw,2.8rem);margin-top:1rem;}
+.s-head p{margin-top:1rem;font-size:1.02rem;}
+
+/* ===== PRODUCT / QR ===== */
+.product-wrap{display:grid;grid-template-columns:1.1fr .9fr;gap:4rem;align-items:center;}
+@media (max-width:900px){.product-wrap{grid-template-columns:1fr;}}
+.product-card{
+  background:var(--card);border:1px solid var(--border);border-radius:24px;overflow:hidden;
+  backdrop-filter:blur(20px);
+}
+.product-card img{width:100%;display:block;height:340px;object-fit:cover;filter:saturate(1.05);}
+.product-meta{padding:1.8rem;display:grid;grid-template-columns:1fr 1fr;gap:1.2rem;}
+.product-meta .item .k{font-family:var(--font-mono);font-size:.66rem;color:var(--grey);letter-spacing:.1em;text-transform:uppercase;}
+.product-meta .item .v{font-size:1rem;margin-top:.3rem;}
+.qr-box{
+  display:flex;flex-direction:column;align-items:center;gap:1.6rem;
+  padding:3rem 2rem;border:1px solid var(--border);border-radius:24px;background:var(--card);
+  position:relative;overflow:hidden;
+}
+.qr-visual{width:180px;height:180px;position:relative;cursor:pointer;}
+.qr-visual svg{width:100%;height:100%;}
+.qr-glow{position:absolute;inset:-20%;background:radial-gradient(circle,var(--blue) 0%,transparent 65%);opacity:0;transition:opacity .5s ease;pointer-events:none;}
+.qr-box.lit .qr-glow{opacity:.55;}
+.qr-box.lit .qr-visual rect{fill:var(--cyan) !important;transition:fill .4s ease;}
+.qr-cap{font-family:var(--font-mono);font-size:.72rem;letter-spacing:.08em;color:var(--grey);text-align:center;}
+
+/* ===== JOURNEY TIMELINE ===== */
+.journey{overflow-x:auto;padding-bottom:1rem;-webkit-overflow-scrolling:touch;}
+.journey-track{display:flex;gap:0;position:relative;min-width:900px;padding:2rem 0;}
+.journey-track::before{
+  content:'';position:absolute;top:calc(2rem + 20px);left:0;right:0;height:1px;
+  background:repeating-linear-gradient(90deg, var(--border) 0 8px, transparent 8px 16px);
+}
+.j-stop{flex:1;display:flex;flex-direction:column;align-items:center;text-align:center;padding:0 1rem;cursor:pointer;}
+.j-dot{width:40px;height:40px;border-radius:50%;background:var(--indigo);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-family:var(--font-mono);font-size:.75rem;color:var(--cyan);position:relative;z-index:2;transition:all .3s ease;}
+.j-stop.active .j-dot{background:linear-gradient(120deg,var(--blue),var(--violet));box-shadow:0 0 24px rgba(79,123,255,.6);color:#fff;transform:scale(1.15);}
+.j-label{margin-top:1rem;font-size:.85rem;font-weight:500;}
+.j-detail{max-height:0;overflow:hidden;transition:max-height .4s ease, opacity .3s ease;opacity:0;font-size:.78rem;color:var(--grey);margin-top:.6rem;max-width:180px;}
+.j-stop.active .j-detail{max-height:120px;opacity:1;}
+
+/* ===== MAKERS ===== */
+.makers-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:1.4rem;}
+.maker-card{
+  background:var(--card);border:1px solid var(--border);border-radius:20px;padding:1.6rem;
+  transition:transform .35s ease, border-color .35s ease;
+}
+.maker-card:hover{transform:translateY(-8px);border-color:var(--blue);}
+.maker-card img{width:64px;height:64px;border-radius:50%;object-fit:cover;border:1px solid var(--border);}
+.maker-card .role{font-family:var(--font-mono);font-size:.68rem;color:var(--cyan);letter-spacing:.08em;text-transform:uppercase;margin-top:1rem;}
+.maker-card h3{font-size:1.15rem;margin-top:.3rem;}
+.maker-card .exp{font-size:.78rem;color:var(--grey);margin-top:.2rem;}
+.maker-card .skills{display:flex;flex-wrap:wrap;gap:.4rem;margin-top:.9rem;}
+.maker-card .skills span{font-family:var(--font-mono);font-size:.64rem;padding:.25rem .55rem;border:1px solid var(--border);border-radius:999px;color:var(--grey);}
+.maker-card .quote{margin-top:1rem;font-size:.82rem;font-style:italic;color:var(--grey);border-left:2px solid var(--blue);padding-left:.8rem;}
+
+/* ===== FACTORY IDENTITY ===== */
+.factory-wrap{display:grid;grid-template-columns:1fr 1fr;gap:3rem;align-items:center;}
+@media (max-width:900px){.factory-wrap{grid-template-columns:1fr;}}
+.factory-imgs{display:grid;grid-template-columns:1fr 1fr;gap:.8rem;}
+.factory-imgs img{width:100%;height:150px;object-fit:cover;border-radius:14px;border:1px solid var(--border);}
+.factory-imgs img:first-child{grid-column:1/3;height:220px;}
+.fact-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.4rem;margin-top:1.6rem;}
+.fact-grid .k{font-family:var(--font-mono);font-size:.66rem;color:var(--grey);text-transform:uppercase;letter-spacing:.08em;}
+.fact-grid .v{margin-top:.3rem;font-size:.98rem;}
+
+/* ===== TRUST DASHBOARD ===== */
+.trust-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1.2rem;}
+.trust-card{
+  background:var(--card);border:1px solid var(--border);border-radius:20px;padding:1.6rem;cursor:pointer;
+  transition:border-color .3s ease, transform .3s ease;
+}
+.trust-card:hover{border-color:var(--cyan);transform:translateY(-4px);}
+.trust-num{font-family:var(--font-display);font-size:2.6rem;font-weight:700;background:linear-gradient(120deg,var(--cyan),var(--blue));-webkit-background-clip:text;background-clip:text;color:transparent;}
+.trust-label{font-family:var(--font-mono);font-size:.7rem;color:var(--grey);letter-spacing:.06em;text-transform:uppercase;margin-top:.5rem;}
+.trust-bar{margin-top:1rem;height:4px;border-radius:2px;background:rgba(255,255,255,.06);overflow:hidden;}
+.trust-bar .fill{height:100%;width:0%;background:linear-gradient(90deg,var(--blue),var(--cyan));transition:width 1.4s cubic-bezier(.16,.8,.24,1);}
+
+/* ===== CERTIFICATIONS ===== */
+.cert-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:1.2rem;}
+.cert-stamp{
+  aspect-ratio:1/1;border:1px dashed var(--border);border-radius:50%;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;
+  cursor:pointer;transition:all .3s ease;padding:1rem;position:relative;
+}
+.cert-stamp:hover{border-color:var(--cyan);box-shadow:0 0 30px rgba(110,235,255,.15);transform:rotate(-2deg) scale(1.03);}
+.cert-stamp .abbr{font-family:var(--font-display);font-weight:700;font-size:1.3rem;}
+.cert-stamp .full{font-size:.68rem;color:var(--grey);margin-top:.4rem;}
+.cert-panel{
+  margin-top:2rem;background:var(--card);border:1px solid var(--border);border-radius:18px;padding:1.6rem 1.8rem;
+  display:none;
+}
+.cert-panel.show{display:block;}
+.cert-panel h4{font-family:var(--font-mono);color:var(--cyan);font-size:.85rem;letter-spacing:.05em;}
+.cert-panel p{margin-top:.6rem;font-size:.9rem;}
+
+/* ===== IMPACT ===== */
+.impact-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.4rem;}
+@media (max-width:800px){.impact-grid{grid-template-columns:1fr;}}
+.impact-card{background:var(--card);border:1px solid var(--border);border-radius:22px;padding:2.2rem;text-align:center;}
+.impact-big{font-family:var(--font-display);font-size:2.4rem;font-weight:700;}
+.impact-big .unit{font-size:1.1rem;color:var(--cyan);}
+.impact-sub{margin-top:.7rem;font-size:.85rem;}
+
+/* ===== FACTORY STORY (vertical timeline) ===== */
+.vtimeline{position:relative;padding-left:2.4rem;}
+.vtimeline::before{content:'';position:absolute;left:6px;top:6px;bottom:6px;width:1px;background:repeating-linear-gradient(180deg,var(--border) 0 8px, transparent 8px 16px);}
+.v-item{position:relative;padding-bottom:2.6rem;}
+.v-item::before{content:'';position:absolute;left:-2.4rem;top:4px;width:12px;height:12px;border-radius:50%;background:var(--indigo);border:1px solid var(--cyan);}
+.v-item .yr{font-family:var(--font-mono);font-size:.72rem;color:var(--cyan);letter-spacing:.08em;}
+.v-item h4{margin-top:.4rem;font-size:1.15rem;}
+.v-item p{margin-top:.4rem;font-size:.88rem;max-width:52ch;}
+
+/* ===== BANGLADESH STORY ===== */
+.bd-wrap{display:grid;grid-template-columns:1fr 1fr;gap:3rem;align-items:center;}
+@media (max-width:900px){.bd-wrap{grid-template-columns:1fr;}}
+.bd-stats{display:grid;grid-template-columns:1fr 1fr;gap:1.2rem;}
+.bd-stat{border-left:2px solid var(--blue);padding-left:1rem;}
+.bd-stat .num{font-family:var(--font-display);font-size:1.8rem;font-weight:700;}
+.bd-stat .lbl{font-size:.76rem;color:var(--grey);margin-top:.2rem;}
+.map-wrap{position:relative;border:1px solid var(--border);border-radius:20px;background:var(--card);padding:2rem;}
+.map-wrap svg{width:100%;height:auto;}
+.map-dot{fill:var(--cyan);}
+.map-pulse{animation:pulse 2.4s ease-out infinite;}
+@keyframes pulse{0%{r:3;opacity:1;}100%{r:16;opacity:0;}}
+
+/* ===== BEYOND THE STITCH ===== */
+.movement{text-align:center;max-width:760px;margin:0 auto;}
+.movement h2{font-size:clamp(1.9rem,4.5vw,3.2rem);}
+.movement p{margin-top:1.6rem;font-size:1.1rem;}
+
+/* ===== CTA ===== */
+.cta-section{
+  text-align:center;padding:min(16vh,160px) 0;
+  background:radial-gradient(ellipse at center, rgba(79,123,255,.12), transparent 70%);
+}
+.cta-btns{display:flex;gap:1rem;flex-wrap:wrap;justify-content:center;margin-top:2.4rem;}
+
+footer{border-top:1px solid var(--border);padding:2.4rem 6vw;display:flex;justify-content:space-between;flex-wrap:wrap;gap:1rem;font-family:var(--font-mono);font-size:.72rem;color:var(--grey);}
+
+/* ===== PASSPORT MODAL ===== */
+.passport-overlay{
+  position:fixed;inset:0;z-index:200;background:rgba(4,6,20,.82);backdrop-filter:blur(10px);
+  display:flex;align-items:center;justify-content:center;padding:2rem;
+  opacity:0;pointer-events:none;transition:opacity .4s ease;
+}
+.passport-overlay.open{opacity:1;pointer-events:all;}
+.passport-card{
+  width:100%;max-width:460px;max-height:88vh;overflow-y:auto;
+  background:linear-gradient(160deg,var(--indigo),var(--navy));
+  border:1px solid var(--border);border-radius:26px;
+  transform:translateY(30px) scale(.96);transition:transform .5s cubic-bezier(.16,.8,.24,1);
+  box-shadow:0 40px 100px rgba(0,0,0,.5);
+}
+.passport-overlay.open .passport-card{transform:translateY(0) scale(1);}
+.pp-top{padding:1.8rem;display:flex;gap:1.2rem;align-items:center;border-bottom:1px dashed var(--border);position:relative;}
+.pp-top img{width:64px;height:64px;border-radius:12px;object-fit:cover;}
+.pp-top .pp-id{font-family:var(--font-mono);font-size:.7rem;color:var(--cyan);letter-spacing:.06em;}
+.pp-top h3{margin-top:.3rem;font-size:1.1rem;}
+.pp-status{margin-left:auto;font-family:var(--font-mono);font-size:.62rem;padding:.35rem .7rem;border-radius:999px;border:1px solid var(--cyan);color:var(--cyan);}
+.pp-close{position:absolute;top:-14px;right:-14px;width:32px;height:32px;border-radius:50%;background:var(--indigo);border:1px solid var(--border);color:#fff;cursor:pointer;font-size:1rem;}
+.pp-nav{display:flex;gap:.4rem;padding:1rem 1.8rem 0;flex-wrap:wrap;}
+.pp-nav button{
+  font-family:var(--font-mono);font-size:.64rem;padding:.4rem .7rem;border-radius:999px;
+  border:1px solid var(--border);background:transparent;color:var(--grey);cursor:pointer;
+}
+.pp-nav button.active{border-color:var(--cyan);color:var(--cyan);}
+.pp-body{padding:1.6rem 1.8rem 2.2rem;}
+.pp-panel{display:none;}
+.pp-panel.active{display:block;}
+.pp-row{display:flex;justify-content:space-between;padding:.6rem 0;border-bottom:1px solid var(--border);font-size:.85rem;}
+.pp-row span:first-child{color:var(--grey);}
+
+@media (max-width:640px){
+  .journey-track{min-width:760px;}
+  .cert-grid{grid-template-columns:repeat(2,1fr);}
+}
+</style>
+</head>
+<body>
+
+<div class="glow-field">
+  <div class="glow g1"></div>
+  <div class="glow g2"></div>
+  <div class="glow g3"></div>
+</div>
+
+<nav class="topnav">
+  <div class="brand"><span class="dot"></span> BD // APPAREL PASSPORT</div>
+  <button class="nav-cta" onclick="openPassport()">Open Passport</button>
+</nav>
+
+<div class="rail" id="rail"></div>
+
+<!-- SECTION 1: HERO -->
+<header class="hero" id="s1">
+  <div class="container">
+    <div class="stamp reveal">BEYOND THE STITCH — BANGLADESH</div>
+    <h1 class="reveal reveal-delay-1">Bangladesh Apparel Passport</h1>
+    <p class="sub reveal reveal-delay-2">Every garment has a story. Now every buyer can experience it — before the first sample ships.</p>
+    <div class="cta-row reveal reveal-delay-3">
+      <button class="btn btn-primary" onclick="openPassport()">Scan Experience ↓</button>
+      <button class="btn btn-ghost" onclick="document.getElementById('s5').scrollIntoView({behavior:'smooth'})">Meet the Factory</button>
+    </div>
+    <div class="scroll-ind"><span>SCROLL</span><span class="line"></span></div>
+  </div>
+</header>
+
+<!-- SECTION 2: MEET YOUR PRODUCT -->
+<section class="section-pad" id="s2">
+  <div class="container">
+    <div class="s-head reveal">
+      <div class="eyebrow">Section 02</div>
+      <h2>Meet your product.</h2>
+      <p>Transparency builds confidence. Scan to trace this garment back to its first thread.</p>
+    </div>
+    <div class="product-wrap">
+      <div class="product-card reveal">
+        <img src="https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?q=80&w=1200&auto=format&fit=crop" alt="Premium knit apparel product">
+        <div class="product-meta">
+          <div class="item"><div class="k">Product</div><div class="v">Organic Cotton Oxford Shirt</div></div>
+          <div class="item"><div class="k">Factory</div><div class="v">Meridian Knitwear Ltd.</div></div>
+          <div class="item"><div class="k">Destination</div><div class="v">Hamburg, Germany</div></div>
+          <div class="item"><div class="k">Country of Origin</div><div class="v">Bangladesh</div></div>
+        </div>
+      </div>
+      <div class="qr-box reveal reveal-delay-1" id="qrBox">
+        <div class="qr-glow"></div>
+        <div class="qr-visual" onclick="lightQR()" id="qrSvgWrap">
+          <svg viewBox="0 0 100 100"><g id="qrGrid" fill="#4F7BFF"></g></svg>
+        </div>
+        <div class="qr-cap">TAP TO ACTIVATE<br>PASSPORT ID: BD-2026-M-0417</div>
+        <button class="btn btn-primary" onclick="openPassport()">Open Digital Passport</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION 3: JOURNEY TIMELINE -->
+<section class="section-pad" id="s3">
+  <div class="container">
+    <div class="s-head reveal">
+      <div class="eyebrow">Section 03</div>
+      <h2>The journey, mapped.</h2>
+      <p>Every stitch tells a story. Tap a stop to see what happened there.</p>
+    </div>
+    <div class="journey reveal">
+      <div class="journey-track" id="journeyTrack"></div>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION 4: MEET THE MAKERS -->
+<section class="section-pad" id="s4">
+  <div class="container">
+    <div class="s-head reveal">
+      <div class="eyebrow">Section 04</div>
+      <h2>Meet the people behind precision.</h2>
+      <p>The specialists responsible for every stage of production.</p>
+    </div>
+    <div class="makers-grid" id="makersGrid"></div>
+  </div>
+</section>
+
+<!-- SECTION 5: FACTORY IDENTITY -->
+<section class="section-pad" id="s5">
+  <div class="container">
+    <div class="s-head reveal">
+      <div class="eyebrow">Section 05</div>
+      <h2>Factory identity.</h2>
+      <p>A full profile, open for inspection.</p>
+    </div>
+    <div class="factory-wrap">
+      <div class="factory-imgs reveal">
+        <img src="https://images.unsplash.com/photo-1615461066841-6116e61058f4?q=80&w=1200&auto=format&fit=crop" alt="Factory floor">
+        <img src="https://images.unsplash.com/photo-1581094794329-c8112a89af12?q=80&w=800&auto=format&fit=crop" alt="Textile machinery">
+        <img src="https://images.unsplash.com/photo-1612462766564-895e9c1fd10c?q=80&w=800&auto=format&fit=crop" alt="Fabric rolls">
+      </div>
+      <div class="reveal reveal-delay-1">
+        <h3 style="font-size:1.6rem;">Meridian Knitwear Ltd.</h3>
+        <p style="margin-top:.6rem;">Gazipur, Bangladesh — LEED Platinum certified facility built for precision knitwear at scale.</p>
+        <div class="fact-grid">
+          <div><div class="k">Products</div><div class="v">Knitwear, Wovens, Activewear</div></div>
+          <div><div class="k">Capacity</div><div class="v">1.2M pcs / month</div></div>
+          <div><div class="k">Lead Time</div><div class="v">45–60 days</div></div>
+          <div><div class="k">Export Markets</div><div class="v">EU, UK, North America</div></div>
+          <div><div class="k">Certifications</div><div class="v">LEED, OEKO-TEX, ISO 9001</div></div>
+          <div><div class="k">Capabilities</div><div class="v">Design, Sampling, Bulk, QA</div></div>
+        </div>
+        <button class="btn btn-ghost" style="margin-top:2rem;">Take Virtual Tour</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION 6: TRUST DASHBOARD -->
+<section class="section-pad" id="s6">
+  <div class="container">
+    <div class="s-head reveal">
+      <div class="eyebrow">Section 06</div>
+      <h2>Trust dashboard.</h2>
+      <p>Trust starts before the first sample. These numbers are audited quarterly.</p>
+    </div>
+    <div class="trust-grid" id="trustGrid"></div>
+  </div>
+</section>
+
+<!-- SECTION 7: CERTIFICATIONS -->
+<section class="section-pad" id="s7">
+  <div class="container">
+    <div class="s-head reveal">
+      <div class="eyebrow">Section 07</div>
+      <h2>Certifications.</h2>
+      <p>Every stamp, verified.</p>
+    </div>
+    <div class="cert-grid" id="certGrid"></div>
+    <div class="cert-panel" id="certPanel"></div>
+  </div>
+</section>
+
+<!-- SECTION 8: SUSTAINABILITY IMPACT -->
+<section class="section-pad" id="s8">
+  <div class="container">
+    <div class="s-head reveal">
+      <div class="eyebrow">Section 08</div>
+      <h2>See beyond the product.</h2>
+      <p>The impact behind a single garment.</p>
+    </div>
+    <div class="impact-grid" id="impactGrid"></div>
+  </div>
+</section>
+
+<!-- SECTION 9: FACTORY STORY -->
+<section class="section-pad" id="s9">
+  <div class="container">
+    <div class="s-head reveal">
+      <div class="eyebrow">Section 09</div>
+      <h2>Factory story.</h2>
+      <p>Two decades of building, quietly.</p>
+    </div>
+    <div class="vtimeline" id="vtimeline"></div>
+  </div>
+</section>
+
+<!-- SECTION 10: BANGLADESH STORY -->
+<section class="section-pad" id="s10">
+  <div class="container">
+    <div class="s-head reveal">
+      <div class="eyebrow">Section 10</div>
+      <h2>Why Bangladesh.</h2>
+      <p>The second-largest apparel exporter in the world — and a leader in green manufacturing.</p>
+    </div>
+    <div class="bd-wrap">
+      <div class="map-wrap reveal">
+        <svg viewBox="0 0 400 260">
+          <path d="M60 220 Q120 40 220 60 T340 130" stroke="rgba(111,143,255,.25)" stroke-width="1" fill="none"/>
+          <path d="M60 220 Q160 180 280 200" stroke="rgba(111,143,255,.25)" stroke-width="1" fill="none"/>
+          <circle cx="60" cy="220" r="5" class="map-dot"/>
+          <circle cx="60" cy="220" r="3" class="map-dot map-pulse"/>
+          <circle cx="220" cy="60" r="3" fill="#785BFF"/>
+          <circle cx="340" cy="130" r="3" fill="#785BFF"/>
+          <circle cx="280" cy="200" r="3" fill="#785BFF"/>
+          <text x="45" y="240" fill="#C7CFDD" font-family="JetBrains Mono" font-size="8">DHAKA / GAZIPUR</text>
+          <text x="230" y="52" fill="#C7CFDD" font-family="JetBrains Mono" font-size="8">EU</text>
+          <text x="300" y="122" fill="#C7CFDD" font-family="JetBrains Mono" font-size="8">UK</text>
+          <text x="255" y="212" fill="#C7CFDD" font-family="JetBrains Mono" font-size="8">USA</text>
+        </svg>
+      </div>
+      <div class="bd-stats reveal reveal-delay-1">
+        <div class="bd-stat"><div class="num">$47B</div><div class="lbl">Annual export value</div></div>
+        <div class="bd-stat"><div class="num">#2</div><div class="lbl">Global apparel exporter</div></div>
+        <div class="bd-stat"><div class="num">220+</div><div class="lbl">LEED-certified green factories</div></div>
+        <div class="bd-stat"><div class="num">58%</div><div class="lbl">Women in the workforce</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION 11: BEYOND THE STITCH -->
+<section class="section-pad" id="s11">
+  <div class="container movement reveal">
+    <div class="eyebrow" style="justify-content:center;">The Movement</div>
+    <h2 style="margin-top:1rem;">Beyond the Stitch</h2>
+    <p>Beyond the Stitch is Bangladesh's commitment to open the full journey of a garment to the people who buy it — every factory, every maker, every measured outcome, visible before a single conversation begins. Not a claim. A passport.</p>
+  </div>
+</section>
+
+<!-- SECTION 12: CTA -->
+<section class="cta-section" id="s12">
+  <div class="container" style="text-align:center;">
+    <div class="eyebrow" style="justify-content:center;">Section 12</div>
+    <h2 style="font-size:clamp(1.8rem,4vw,2.8rem);margin-top:1rem;">Trust starts here.</h2>
+    <p style="max-width:44ch;margin:1rem auto 0;">I already trust this supplier before speaking to them — that's the goal of every passport we issue.</p>
+    <div class="cta-btns">
+      <button class="btn btn-primary">Request Sample</button>
+      <button class="btn btn-ghost">Schedule Meeting</button>
+      <button class="btn btn-ghost">Download Capability Profile</button>
+      <button class="btn btn-ghost">Contact Factory</button>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div>BEYOND THE STITCH — BANGLADESH APPAREL PASSPORT</div>
+  <div>EVERY THREAD BUILDS TRUST</div>
+</footer>
+
+<!-- PASSPORT MODAL -->
+<div class="passport-overlay" id="passportOverlay">
+  <div class="passport-card">
+    <div class="pp-top">
+      <button class="pp-close" onclick="closePassport()">✕</button>
+      <img src="https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?q=80&w=300&auto=format&fit=crop" alt="Product">
+      <div>
+        <div class="pp-id">PASSPORT · BD-2026-M-0417</div>
+        <h3>Organic Cotton Oxford Shirt</h3>
+      </div>
+      <div class="pp-status">VERIFIED</div>
+    </div>
+    <div class="pp-nav" id="ppNav"></div>
+    <div class="pp-body" id="ppBody"></div>
+  </div>
+</div>
+
+<script>
+/* ---------- reveal on scroll ---------- */
+const revealEls = document.querySelectorAll('.reveal');
+const io = new IntersectionObserver((entries)=>{
+  entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('in'); } });
+},{threshold:.15});
+revealEls.forEach(el=>io.observe(el));
+
+/* ---------- progress rail ---------- */
+const sections = document.querySelectorAll('section, header.hero');
+const rail = document.getElementById('rail');
+sections.forEach(s=>{
+  const n = document.createElement('div');
+  n.className='node';
+  n.dataset.target = s.id;
+  n.addEventListener('click',()=>document.getElementById(s.id).scrollIntoView({behavior:'smooth'}));
+  rail.appendChild(n);
+});
+const nodes = rail.querySelectorAll('.node');
+const railObserver = new IntersectionObserver((entries)=>{
+  entries.forEach(e=>{
+    const node = rail.querySelector(`[data-target="${e.target.id}"]`);
+    if(e.isIntersecting){ nodes.forEach(n=>n.classList.remove('active')); node.classList.add('active'); }
+  });
+},{threshold:.5});
+sections.forEach(s=>railObserver.observe(s));
+
+/* ---------- QR grid draw ---------- */
+const qrGrid = document.getElementById('qrGrid');
+let qrSeed = [1,1,1,0,1,1,1, 1,0,0,0,0,0,1, 1,0,1,1,1,0,1, 1,0,1,1,1,0,1, 1,0,1,1,1,0,1, 1,0,0,0,0,0,1, 1,1,1,0,1,1,1];
+const cell = 100/7;
+qrSeed.forEach((v,i)=>{
+  if(!v) return;
+  const x = (i%7)*cell, y = Math.floor(i/7)*cell;
+  const r = document.createElementNS('http://www.w3.org/2000/svg','rect');
+  r.setAttribute('x',x); r.setAttribute('y',y);
+  r.setAttribute('width',cell*0.9); r.setAttribute('height',cell*0.9);
+  qrGrid.appendChild(r);
+});
+function lightQR(){
+  const box = document.getElementById('qrBox');
+  box.classList.add('lit');
+  setTimeout(()=>openPassport(),650);
+}
+
+/* ---------- journey timeline data ---------- */
+const journeySteps = [
+  {label:'Raw Material', detail:'Certified organic cotton sourced and graded.'},
+  {label:'Fabric', detail:'Knitted, dyed, and tested for colorfastness.'},
+  {label:'Cutting', detail:'Precision-cut using automated markers.'},
+  {label:'Sewing', detail:'Assembled by specialist operators.'},
+  {label:'Quality Inspection', detail:'AQL 2.5 four-point inspection.'},
+  {label:'Packing', detail:'Folded, tagged, and cartoned for export.'},
+  {label:'Export', detail:'Cleared and shipped from Chattogram port.'},
+  {label:'Buyer', detail:'Arrives ready for shelf.'}
+];
+const track = document.getElementById('journeyTrack');
+journeySteps.forEach((s,i)=>{
+  const el = document.createElement('div');
+  el.className='j-stop'+(i===0?' active':'');
+  el.innerHTML = `<div class="j-dot">${String(i+1).padStart(2,'0')}</div><div class="j-label">${s.label}</div><div class="j-detail">${s.detail}</div>`;
+  el.addEventListener('click',()=>{
+    document.querySelectorAll('.j-stop').forEach(n=>n.classList.remove('active'));
+    el.classList.add('active');
+  });
+  track.appendChild(el);
+});
+
+/* ---------- makers ---------- */
+const makers = [
+  {name:'Rezaul Karim', role:'Production Manager', years:'14 yrs experience', skills:['Lean Mfg','Planning','Line Balancing'], quote:'Every order is a promise we keep on time.', img:'https://ui-avatars.com/api/?name=Rezaul+Karim&background=11183A&color=6EEBFF&size=128'},
+  {name:'Nasrin Akter', role:'Quality Engineer', years:'9 yrs experience', skills:['AQL Audits','Six Sigma','Fabric Testing'], quote:'Precision is not optional — it is the product.', img:'https://ui-avatars.com/api/?name=Nasrin+Akter&background=11183A&color=6EEBFF&size=128'},
+  {name:'Mahmudul Hasan', role:'Pattern Master', years:'18 yrs experience', skills:['CAD Grading','Fit Analysis','Draping'], quote:'A pattern is where quality is decided first.', img:'https://ui-avatars.com/api/?name=Mahmudul+Hasan&background=11183A&color=6EEBFF&size=128'},
+  {name:'Shirin Sultana', role:'Sewing Operator', years:'7 yrs experience', skills:['Overlock','Flatlock','Multi-needle'], quote:'I know this line the way I know my own hands.', img:'https://ui-avatars.com/api/?name=Shirin+Sultana&background=11183A&color=6EEBFF&size=128'},
+  {name:'Tanvir Ahmed', role:'Merchandiser', years:'11 yrs experience', skills:['Costing','Sourcing','Buyer Relations'], quote:'Transparency is the fastest way to earn trust.', img:'https://ui-avatars.com/api/?name=Tanvir+Ahmed&background=11183A&color=6EEBFF&size=128'}
+];
+const makersGrid = document.getElementById('makersGrid');
+makers.forEach(m=>{
+  const c = document.createElement('div');
+  c.className='maker-card reveal';
+  c.innerHTML = `<img src="${m.img}" alt="${m.name}">
+    <div class="role">${m.role}</div>
+    <h3>${m.name}</h3>
+    <div class="exp">${m.years}</div>
+    <div class="skills">${m.skills.map(s=>`<span>${s}</span>`).join('')}</div>
+    <div class="quote">"${m.quote}"</div>`;
+  makersGrid.appendChild(c);
+  io.observe(c);
+});
+
+/* ---------- trust dashboard ---------- */
+const trustMetrics = [
+  {label:'Compliance Score', value:98, unit:'%'},
+  {label:'Worker Welfare Index', value:94, unit:'%'},
+  {label:'Women in Leadership', value:41, unit:'%'},
+  {label:'Energy Saved YoY', value:27, unit:'%'},
+  {label:'Water Saved YoY', value:35, unit:'%'},
+  {label:'Carbon Reduction', value:22, unit:'%'},
+  {label:'Renewable Energy Use', value:63, unit:'%'},
+  {label:'Safety Audits Passed', value:100, unit:'%'}
+];
+const trustGrid = document.getElementById('trustGrid');
+trustMetrics.forEach(m=>{
+  const c = document.createElement('div');
+  c.className='trust-card reveal';
+  c.innerHTML = `<div class="trust-num" data-target="${m.value}">0${m.unit}</div>
+    <div class="trust-label">${m.label}</div>
+    <div class="trust-bar"><div class="fill" data-w="${m.value}"></div></div>`;
+  trustGrid.appendChild(c);
+  io.observe(c);
+});
+const trustObserver = new IntersectionObserver((entries)=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting){
+      const numEl = e.target.querySelector('.trust-num');
+      const fillEl = e.target.querySelector('.fill');
+      const target = parseInt(numEl.dataset.target);
+      const unit = numEl.textContent.replace(/[0-9]/g,'').trim() || '%';
+      let cur = 0;
+      const step = Math.max(1, Math.round(target/40));
+      const iv = setInterval(()=>{
+        cur += step;
+        if(cur>=target){cur=target; clearInterval(iv);}
+        numEl.textContent = cur+unit;
+      },25);
+      fillEl.style.width = fillEl.dataset.w+'%';
+      trustObserver.unobserve(e.target);
+    }
+  });
+},{threshold:.4});
+document.querySelectorAll('.trust-card').forEach(c=>trustObserver.observe(c));
+
+/* ---------- certifications ---------- */
+const certs = [
+  {abbr:'LEED', full:'Leadership in Energy & Environmental Design', desc:'This facility holds LEED Platinum status, recognizing best-in-class energy and water efficiency in the built structure itself.'},
+  {abbr:'OEKO-TEX', full:'Standard 100 — Fabric Safety', desc:'Every fabric batch is tested for harmful substances, confirming the garment is safe for skin contact at every stage.'},
+  {abbr:'RSC', full:'RMG Sustainability Council', desc:'Independent, tripartite oversight of fire, electrical, and structural safety across the factory.'},
+  {abbr:'ISO', full:'ISO 9001 Quality Management', desc:'A certified quality management system governing every production line and process.'},
+  {abbr:'WRAP', full:'Worldwide Responsible Accredited Production', desc:'Certifies humane and ethical manufacturing practices across the facility.'},
+  {abbr:'BSCI', full:'Business Social Compliance Initiative', desc:'Ongoing social audits verifying fair labor practices and worker rights.'}
+];
+const certGrid = document.getElementById('certGrid');
+const certPanel = document.getElementById('certPanel');
+certs.forEach(c=>{
+  const el = document.createElement('div');
+  el.className='cert-stamp reveal';
+  el.innerHTML = `<div class="abbr">${c.abbr}</div><div class="full">${c.full}</div>`;
+  el.addEventListener('click',()=>{
+    certPanel.classList.add('show');
+    certPanel.innerHTML = `<h4>${c.abbr} — ${c.full}</h4><p>${c.desc}</p>`;
+  });
+  certGrid.appendChild(el);
+  io.observe(el);
+});
+
+/* ---------- impact ---------- */
+const impacts = [
+  {big:'420', unit:'L', sub:'Water saved per garment vs. conventional dyeing.'},
+  {big:'2.1', unit:'kg', sub:'CO₂ avoided through renewable energy use.'},
+  {big:'100', unit:'%', sub:'Fabric offcuts recycled into new yarn.'}
+];
+const impactGrid = document.getElementById('impactGrid');
+impacts.forEach(i=>{
+  const c = document.createElement('div');
+  c.className='impact-card reveal';
+  c.innerHTML = `<div class="impact-big">${i.big}<span class="unit">${i.unit}</span></div><div class="impact-sub">${i.sub}</div>`;
+  impactGrid.appendChild(c);
+  io.observe(c);
+});
+
+/* ---------- factory story vtimeline ---------- */
+const storyItems = [
+  {yr:'2004', h:'Founding', p:'Meridian Knitwear opens with a single sewing line and eighteen workers.'},
+  {yr:'2011', h:'First export order', p:"A European retailer places the factory's first direct international order."},
+  {yr:'2016', h:'Green rebuild', p:'The facility is rebuilt to LEED standards, cutting water use by a third.'},
+  {yr:'2021', h:'Digital traceability', p:'Every order begins carrying a digital passport from cutting to shipment.'},
+  {yr:'2026', h:'6,000 workers', p:"Now one of the region's largest employers, with over half in leadership roles."}
+];
+const vtimeline = document.getElementById('vtimeline');
+storyItems.forEach(s=>{
+  const el = document.createElement('div');
+  el.className='v-item reveal';
+  el.innerHTML = `<div class="yr">${s.yr}</div><h4>${s.h}</h4><p>${s.p}</p>`;
+  vtimeline.appendChild(el);
+  io.observe(el);
+});
+
+/* ---------- passport modal ---------- */
+const ppData = [
+  {key:'journey', label:'Journey', render:()=>journeySteps.map(s=>`<div class="pp-row"><span>${s.label}</span><span>✓</span></div>`).join('')},
+  {key:'factory', label:'Factory', render:()=>`
+    <div class="pp-row"><span>Name</span><span>Meridian Knitwear Ltd.</span></div>
+    <div class="pp-row"><span>Location</span><span>Gazipur, BD</span></div>
+    <div class="pp-row"><span>Capacity</span><span>1.2M pcs/mo</span></div>
+    <div class="pp-row"><span>Lead Time</span><span>45–60 days</span></div>`},
+  {key:'makers', label:'Makers', render:()=>makers.map(m=>`<div class="pp-row"><span>${m.role}</span><span>${m.name}</span></div>`).join('')},
+  {key:'trust', label:'Trust', render:()=>trustMetrics.map(t=>`<div class="pp-row"><span>${t.label}</span><span>${t.value}${t.unit}</span></div>`).join('')},
+  {key:'certs', label:'Certifications', render:()=>certs.map(c=>`<div class="pp-row"><span>${c.abbr}</span><span>Verified</span></div>`).join('')},
+  {key:'impact', label:'Impact', render:()=>impacts.map(i=>`<div class="pp-row"><span>${i.sub}</span><span>${i.big}${i.unit}</span></div>`).join('')},
+  {key:'contact', label:'Contact', render:()=>`
+    <div class="pp-row"><span>Merchandiser</span><span>Tanvir Ahmed</span></div>
+    <div class="pp-row"><span>Email</span><span>trade@meridianknit.example</span></div>
+    <div class="pp-row"><span>Response Time</span><span>&lt; 24 hrs</span></div>`}
+];
+const ppNav = document.getElementById('ppNav');
+const ppBody = document.getElementById('ppBody');
+ppData.forEach((p,i)=>{
+  const b = document.createElement('button');
+  b.textContent = p.label;
+  if(i===0) b.classList.add('active');
+  b.addEventListener('click',()=>{
+    ppNav.querySelectorAll('button').forEach(x=>x.classList.remove('active'));
+    b.classList.add('active');
+    showPanel(p.key);
+  });
+  ppNav.appendChild(b);
+});
+function showPanel(key){
+  ppBody.innerHTML='';
+  const p = ppData.find(x=>x.key===key);
+  const div = document.createElement('div');
+  div.className='pp-panel active';
+  div.innerHTML = p.render();
+  ppBody.appendChild(div);
+}
+showPanel('journey');
+
+function openPassport(){
+  document.getElementById('passportOverlay').classList.add('open');
+  document.body.style.overflow='hidden';
+}
+function closePassport(){
+  document.getElementById('passportOverlay').classList.remove('open');
+  document.body.style.overflow='';
+}
+document.getElementById('passportOverlay').addEventListener('click',(e)=>{
+  if(e.target.id==='passportOverlay') closePassport();
+});
+document.addEventListener('keydown',(e)=>{ if(e.key==='Escape') closePassport(); });
+</script>
+</body>
+</html>
