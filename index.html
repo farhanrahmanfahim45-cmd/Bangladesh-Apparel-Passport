@@ -180,7 +180,9 @@ button{font-family:inherit;}
   display:flex;align-items:center;gap:.5rem;flex-shrink:0;
   padding:.55rem 1.8rem;background:rgba(110,235,255,.05);border-bottom:1px dashed var(--border);
   font-family:var(--font-mono);font-size:.58rem;letter-spacing:.03em;color:var(--grey);
+  cursor:pointer;transition:all .2s ease;
 }
+.bai-banner:hover{background:rgba(110,235,255,.1);color:var(--cyan);}
 .bai-banner .vb{
   flex-shrink:0;width:16px;height:16px;border-radius:50%;background:linear-gradient(120deg,var(--cyan),var(--green));
   display:flex;align-items:center;justify-content:center;font-size:.55rem;color:var(--navy);font-weight:700;
@@ -253,7 +255,14 @@ button{font-family:inherit;}
 .kpi-card .k{font-family:var(--font-mono);font-size:.58rem;color:var(--grey);letter-spacing:.05em;text-transform:uppercase;}
 .kpi-card .v{font-family:var(--font-display);font-size:1.05rem;margin-top:.3rem;color:var(--white);}
 
-/* form fields (reused for match score + workspace forms) */
+/* gauge */
+.gauge-grid{display:grid;grid-template-columns:1fr 1fr;gap:.7rem;margin-top:1rem;}
+.gauge-card{border:1px solid var(--border);border-radius:14px;padding:.9rem;background:rgba(255,255,255,.02);display:flex;flex-direction:column;align-items:center;text-align:center;}
+.gauge-card svg{width:78px;height:78px;}
+.gauge-card .gv{font-family:var(--font-display);font-size:1.15rem;font-weight:700;margin-top:.4rem;}
+.gauge-card .gl{font-family:var(--font-mono);font-size:.56rem;color:var(--grey);letter-spacing:.05em;text-transform:uppercase;margin-top:.15rem;}
+
+/* form fields (reused for workspace forms) */
 .field{margin-bottom:1rem;}
 .field label{display:block;font-family:var(--font-mono);font-size:.6rem;color:var(--grey);letter-spacing:.07em;text-transform:uppercase;margin-bottom:.4rem;}
 .field input, .field select, .field textarea{
@@ -264,21 +273,7 @@ button{font-family:inherit;}
 .field input:focus, .field select:focus, .field textarea:focus{outline:none;border-color:var(--cyan);background:rgba(110,235,255,.04);}
 .field textarea{resize:vertical;min-height:70px;font-family:var(--font-body);}
 .field input::placeholder, .field textarea::placeholder{color:rgba(199,207,221,.4);}
-.check-row{display:flex;flex-wrap:wrap;gap:.5rem;}
-.check-chip{
-  font-family:var(--font-mono);font-size:.62rem;padding:.45rem .7rem;border-radius:999px;
-  border:1px solid var(--border);color:var(--grey);cursor:pointer;transition:all .2s ease;user-select:none;
-}
-.check-chip input{display:none;}
-.check-chip.on{border-color:var(--cyan);color:var(--cyan);background:rgba(110,235,255,.06);}
 .full-btn{width:100%;text-align:center;justify-content:center;}
-
-.reason-list{list-style:none;margin-top:1rem;}
-.reason-list li{
-  display:flex;gap:.5rem;font-size:.8rem;color:var(--grey);padding:.4rem 0;
-  border-bottom:1px solid var(--border);
-}
-.reason-list li::before{content:'✓';color:var(--green);flex-shrink:0;font-weight:700;}
 
 /* journey stamps */
 .stamp-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:.7rem;}
@@ -292,6 +287,7 @@ button{font-family:inherit;}
 .visa-stamp .det{max-height:0;overflow:hidden;opacity:0;transition:all .3s ease;font-size:.7rem;color:var(--grey);margin-top:.4rem;text-align:left;line-height:1.5;}
 .visa-stamp.open .det{max-height:160px;opacity:1;}
 .visa-stamp .meta{font-family:var(--font-mono);font-size:.58rem;color:var(--cyan);margin-top:.3rem;display:block;}
+.visa-stamp .badge{display:inline-block;margin-top:.35rem;font-family:var(--font-mono);font-size:.56rem;color:var(--green);}
 
 /* verification cards (trust) */
 .verify-grid{display:grid;grid-template-columns:1fr 1fr;gap:.6rem;margin-top:.9rem;}
@@ -329,25 +325,6 @@ button{font-family:inherit;}
 }
 .conf-badge:hover .tip{display:block;}
 
-/* factory */
-.fact-imgs{display:grid;grid-template-columns:1fr 1fr;gap:.5rem;margin:.9rem 0 1rem;}
-.fact-imgs img{width:100%;height:80px;object-fit:cover;border-radius:8px;border:1px solid var(--border);}
-.tour-grid{display:grid;grid-template-columns:1fr 1fr;gap:.6rem;margin-top:.9rem;}
-.tour-card{
-  border:1px solid var(--border);border-radius:12px;padding:.8rem;cursor:pointer;transition:all .2s ease;
-  background:rgba(255,255,255,.02);
-}
-.tour-card:hover{border-color:var(--violet);background:rgba(120,91,255,.06);}
-.tour-card .play{
-  width:32px;height:32px;border-radius:50%;border:1px solid var(--violet);display:flex;align-items:center;justify-content:center;
-  font-size:.7rem;color:var(--cyan);
-}
-.tour-card .tname{font-family:var(--font-display);font-size:.82rem;margin-top:.55rem;}
-.tour-card .tdur{font-family:var(--font-mono);font-size:.58rem;color:var(--grey);margin-top:.15rem;}
-.tour-note{
-  margin-top:.9rem;font-size:.72rem;color:var(--grey);border:1px dashed var(--border);border-radius:10px;padding:.7rem .8rem;
-}
-
 /* makers */
 .maker-item{display:flex;gap:.9rem;padding:.9rem 0;border-bottom:1px solid var(--border);cursor:pointer;}
 .maker-item img{width:46px;height:46px;border-radius:50%;object-fit:cover;flex-shrink:0;}
@@ -370,32 +347,12 @@ button{font-family:inherit;}
 }
 .impact-item .big{font-family:var(--font-display);font-size:1.5rem;font-weight:700;color:var(--green);}
 .impact-item .sub{font-size:.76rem;color:var(--grey);}
+.snap-grid{display:grid;grid-template-columns:1fr 1fr;gap:.6rem;margin-top:.9rem;}
+.snap-card{border:1px solid var(--border);border-radius:12px;padding:.85rem .9rem;background:rgba(255,255,255,.02);}
+.snap-card .k{font-family:var(--font-mono);font-size:.58rem;color:var(--grey);letter-spacing:.05em;text-transform:uppercase;}
+.snap-card .v{font-family:var(--font-display);font-size:1.3rem;margin-top:.35rem;color:var(--green);}
 
-/* toolkit */
-.doc-list{margin-top:.9rem;display:flex;flex-direction:column;gap:.55rem;}
-.doc-row{
-  display:flex;align-items:center;justify-content:space-between;border:1px solid var(--border);border-radius:10px;
-  padding:.75rem .9rem;background:rgba(255,255,255,.02);
-}
-.doc-row .dname{font-size:.82rem;}
-.doc-row .dmeta{font-family:var(--font-mono);font-size:.58rem;color:var(--grey);margin-top:.15rem;}
-.dl-btn{
-  font-family:var(--font-mono);font-size:.62rem;padding:.4rem .8rem;border-radius:999px;border:1px solid var(--border);
-  background:none;color:var(--cyan);cursor:pointer;flex-shrink:0;transition:all .2s ease;
-}
-.dl-btn:hover{border-color:var(--cyan);background:rgba(110,235,255,.06);}
-
-/* journal */
-.article-card{border:1px solid var(--border);border-radius:12px;padding:.85rem .9rem;margin-bottom:.65rem;cursor:pointer;transition:all .2s ease;}
-.article-card:hover, .article-card.open{border-color:var(--blue);background:rgba(79,123,255,.05);}
-.article-card .cat{font-family:var(--font-mono);font-size:.56rem;color:var(--violet);letter-spacing:.06em;text-transform:uppercase;}
-.article-card .atitle{font-family:var(--font-display);font-size:.9rem;margin-top:.3rem;}
-.article-card .teaser{font-size:.76rem;color:var(--grey);margin-top:.3rem;line-height:1.5;}
-.article-card .full{max-height:0;overflow:hidden;opacity:0;transition:all .3s ease;font-size:.76rem;color:var(--grey);line-height:1.6;margin-top:.5rem;}
-.article-card.open .full{max-height:220px;opacity:1;}
-.article-card .rt{font-family:var(--font-mono);font-size:.56rem;color:var(--grey);margin-top:.4rem;}
-
-/* connect / workspace */
+/* connect / buyer actions */
 .connect-btns{display:flex;flex-direction:column;gap:.55rem;margin-top:1.1rem;}
 .cbtn{
   font-family:var(--font-mono);font-size:.72rem;letter-spacing:.02em;padding:.75rem 1rem;border-radius:10px;
@@ -437,48 +394,13 @@ button{font-family:inherit;}
 .stamp-ref{font-family:var(--font-mono);font-size:.68rem;color:var(--grey);margin-top:1.5rem;letter-spacing:.04em;}
 .stamp-msg{margin-top:.7rem;font-size:.85rem;color:var(--grey);max-width:30ch;line-height:1.5;}
 
-.profile-check{display:flex;justify-content:space-between;padding:.6rem 0;border-bottom:1px solid var(--border);font-size:.82rem;}
-.profile-check span:last-child{color:var(--cyan);}
-
-/* ---------- floating compare + modal ---------- */
-.compare-fab{
-  position:fixed;bottom:1.6rem;right:1.6rem;z-index:60;
-  font-family:var(--font-mono);font-size:.68rem;letter-spacing:.04em;
-  display:flex;align-items:center;gap:.5rem;padding:.75rem 1.1rem;border-radius:999px;
-  background:linear-gradient(120deg,var(--blue),var(--violet));color:#fff;border:none;cursor:pointer;
-  box-shadow:0 12px 34px rgba(79,123,255,.4);transition:transform .25s ease;
-}
-.compare-fab:hover{transform:translateY(-3px);}
-.compare-fab .cnt{background:rgba(255,255,255,.25);border-radius:999px;padding:.05rem .45rem;font-size:.62rem;}
-
-.compare-modal{
-  position:fixed;inset:0;z-index:80;background:rgba(4,7,25,.72);backdrop-filter:blur(6px);
-  display:flex;align-items:center;justify-content:center;padding:1.4rem;
-  opacity:0;pointer-events:none;transition:opacity .3s ease;
-}
-.compare-modal.open{opacity:1;pointer-events:all;}
-.compare-panel{
-  width:min(720px,96vw);max-height:86vh;overflow-y:auto;border-radius:18px;
-  background:linear-gradient(160deg,var(--indigo),var(--navy) 70%);border:1px solid var(--border);
-  box-shadow:0 40px 110px rgba(0,0,0,.55);padding:1.6rem 1.7rem;
-}
-.compare-panel-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:.3rem;}
-.compare-panel-head h3{font-family:var(--font-display);font-size:1.3rem;}
-.compare-note{font-family:var(--font-mono);font-size:.62rem;color:var(--grey);margin-bottom:1rem;}
-table.ctable{width:100%;border-collapse:collapse;font-size:.76rem;}
-.ctable th, .ctable td{text-align:left;padding:.55rem .6rem;border-bottom:1px solid var(--border);white-space:nowrap;}
-.ctable th{font-family:var(--font-mono);font-size:.6rem;color:var(--cyan);letter-spacing:.05em;text-transform:uppercase;}
-.ctable td:first-child, .ctable th:first-child{color:var(--grey);font-family:var(--font-mono);font-size:.62rem;position:sticky;left:0;background:var(--indigo);}
-.ctable tr:hover td{background:rgba(110,235,255,.03);}
-
 @media (max-width:640px){
   .book-wrap{flex-direction:column;align-items:center;gap:.6rem;}
   .tabs{flex-direction:row;flex-wrap:wrap;justify-content:center;padding-top:0;order:2;max-height:none;}
   .tab{border-radius:999px;border-right:1px solid var(--border);padding:.4rem .65rem;}
   .tab.active{transform:none;box-shadow:0 6px 20px rgba(79,123,255,.35);}
   .book{order:1;height:min(540px,66vh);width:94vw;}
-  .stamp-grid, .kpi-grid, .verify-grid, .confidence-grid, .tour-grid{grid-template-columns:1fr;}
-  .compare-fab span.lbl{display:none;}
+  .stamp-grid, .kpi-grid, .verify-grid, .confidence-grid, .gauge-grid, .snap-grid{grid-template-columns:1fr;}
 }
 </style>
 </head>
@@ -512,11 +434,11 @@ table.ctable{width:100%;border-collapse:collapse;font-size:.76rem;}
       <div>
         <div class="cover-country">BANGLADESH</div>
         <div class="cover-title">Apparel<br>Passport</div>
-        <div class="cover-sub">Powered by the Beyond the Stitch Buyer Trust Ecosystem</div>
+        <div class="cover-sub">Verified Digital Trust Document</div>
       </div>
       <div style="display:flex;flex-direction:column;align-items:center;">
         <div class="cover-mrz">P&lt;BGDMERIDIAN&lt;KNITWEAR&lt;&lt;APPAREL&lt;PASSPORT&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;<br>BD2026M0417&lt;8BGD2611115M3112318&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;08</div>
-        <button class="open-btn" onclick="event.stopPropagation();openPassport();">Open Passport</button>
+        <button class="open-btn" onclick="event.stopPropagation();openPassport();">Begin Verification</button>
         <div class="cover-tap">TAP ANYWHERE TO OPEN</div>
       </div>
     </div>
@@ -526,13 +448,15 @@ table.ctable{width:100%;border-collapse:collapse;font-size:.76rem;}
   <div class="book-wrap" id="bookWrap">
     <div class="tabs" id="tabs"></div>
     <div class="book">
-      <div class="bai-banner"><span class="vb">✓</span> Verified company information imported from Bangladesh Apparel Intelligence</div>
+      <div class="bai-banner" onclick="goToFactoryProfile()">
+        <span class="vb">✓</span> Powered by Bangladesh Apparel Intelligence — tap to view Factory Intelligence Profile
+      </div>
       <div class="page-head">
         <div>
-          <div class="pe" id="pageEyebrow">PAGE 01 / 10</div>
-          <h2 id="pageTitle">Buyer Decision Summary</h2>
+          <div class="pe" id="pageEyebrow">PAGE 01 / 06</div>
+          <h2 id="pageTitle">Passport Details</h2>
         </div>
-        <div class="page-count" id="pageCount">01/10</div>
+        <div class="page-count" id="pageCount">01/06</div>
       </div>
       <div class="page-body" id="pageBody"></div>
       <div class="page-foot">
@@ -546,48 +470,30 @@ table.ctable{width:100%;border-collapse:collapse;font-size:.76rem;}
 
 </div>
 
-<button class="compare-fab" id="compareFab" onclick="openCompare()">⇄ <span class="lbl">Compare</span> <span class="cnt" id="compareCnt">3</span></button>
-
-<div class="compare-modal" id="compareModal">
-  <div class="compare-panel">
-    <div class="compare-panel-head">
-      <h3>Smart Factory Comparison</h3>
-      <button class="sub-close" onclick="closeCompare()">✕</button>
-    </div>
-    <div class="compare-note">Comparing your Bangladesh Apparel Intelligence shortlist</div>
-    <div style="overflow-x:auto;">
-      <table class="ctable" id="ctable"></table>
-    </div>
-    <div class="connect-btns" style="margin-top:1.2rem;">
-      <button class="cbtn primary full-btn" onclick="exportComparison()">Export Comparison Report ↓</button>
-    </div>
-  </div>
-</div>
-
 <script>
 /* ================= DATA ================= */
 const factory = {
   name:'Meridian Knitwear Ltd.',
-  location:'Gazipur, Bangladesh',
+  product:'Men\'s Cotton Polo Shirt',
+  hsCode:'6105.10',
+  origin:'Bangladesh',
+  batch:'MK-2026-0417',
+  issueDate:'11 Jul 2026',
+  authority:'Bangladesh Apparel Intelligence',
+  passportId:'BD-APP-2026-0417',
+  status:'Verified',
   readiness:91,
-  bestFor:['Premium Brands','Sustainable Buyers','EU Market','Large Volume Orders','Sportswear'],
-  kpis:[
-    {k:'Response Time', v:'< 24 hrs'},
-    {k:'Sampling Lead Time', v:'10–14 days'},
-    {k:'MOQ', v:'3,000 pcs'},
-    {k:'Production Capacity', v:'1.2M pcs / mo'},
-    {k:'Lead Time', v:'45–60 days'},
-    {k:'Export Experience', v:'12 years'},
-    {k:'Markets Served', v:'EU, UK, N. America'},
-    {k:'Compliance Coverage', v:'6 certifications'}
-  ]
+  trustScore:94,
+  complianceScore:96,
+  esgScore:88,
+  exportYears:'12 years',
+  responseTime:'< 24 hrs',
+  samplingLead:'10–14 days'
 };
-const certs = ['LEED','OEKO-TEX','ISO 9001','WRAP','BSCI','Higg Index'];
 
 const journeySteps = [
-  {label:'Cotton Source', loc:'Rajshahi region', date:'Verified 02 Jun 2026', detail:'Certified organic cotton graded on a Uster HVI, measuring fiber length, strength, micronaire and color in seconds.'},
-  {label:'Spinning', loc:'Narayanganj mill', date:'Verified 06 Jun 2026', detail:'Ring-spun into consistent-count yarn with in-line evenness testing before release to knitting.'},
-  {label:'Fabric Mill', loc:'Gazipur facility', date:'Verified 11 Jun 2026', detail:'Knitted, dyed, and scanned on camera-based inspection applying the ASTM D5430 4-Point System.'},
+  {label:'Raw Material', loc:'Rajshahi region', date:'Verified 02 Jun 2026', detail:'Certified organic cotton graded on a Uster HVI, measuring fiber length, strength, micronaire and color in seconds.'},
+  {label:'Fabric Mill', loc:'Gazipur facility', date:'Verified 11 Jun 2026', detail:'Knitted and scanned on camera-based inspection applying the ASTM D5430 4-Point System.'},
   {label:'Dyeing', loc:'Gazipur facility', date:'Verified 14 Jun 2026', detail:'Closed-loop dyeing line with real-time colorfastness and effluent-quality monitoring.'},
   {label:'Garment Manufacturing', loc:'Meridian Knitwear Ltd.', date:'Verified 22 Jun 2026', detail:'Assembled on JUKI machines with vision-guided worklines assisting on high-repetition seams.'},
   {label:'Quality Inspection', loc:'On-site QC lab', date:'Verified 27 Jun 2026', detail:'AQL 2.5 four-point inspection backed by AI machine-vision defect scanning for real-time detection.'},
@@ -596,170 +502,88 @@ const journeySteps = [
 ];
 
 const verifications = [
-  {name:'BGMEA Verified', authority:'BGMEA', date:'Renewed Jan 2026', status:'Active'},
-  {name:'Passport Verified', authority:'Bangladesh Apparel Passport', date:'Issued 11 Jul 2026', status:'Active'},
-  {name:'Beyond the Stitch Trust Mark', authority:'Beyond the Stitch', date:'Awarded 2025', status:'Active'},
-  {name:'LEED Platinum', authority:'U.S. Green Building Council', date:'Certified 2023', status:'Active'},
-  {name:'ISO 9001', authority:'ISO', date:'Renewed 2025', status:'Active'},
-  {name:'WRAP', authority:'Worldwide Responsible Accredited Production', date:'Renewed 2025', status:'Active'},
-  {name:'BSCI', authority:'amfori', date:'Audited 2025', status:'Active'},
-  {name:'Higg Index', authority:'Sustainable Apparel Coalition', date:'Verified 2025', status:'Active'},
-  {name:'Worker Story Verified', authority:'Beyond the Stitch', date:'Reviewed 2025', status:'Active'},
-  {name:'Product Journey Verified', authority:'Bangladesh Apparel Passport', date:'Per-shipment', status:'Active'}
+  {name:'BGMEA', authority:'Bangladesh Garment Manufacturers and Exporters Association', date:'Renewed Jan 2026'},
+  {name:'BKMEA', authority:'Bangladesh Knitwear Manufacturers and Exporters Association', date:'Renewed 2025'},
+  {name:'Bangladesh Apparel Intelligence', authority:'Platform Verification', date:'Confirmed 2026'},
+  {name:'Beyond the Stitch Trust Mark', authority:'Beyond the Stitch', date:'Awarded 2025'},
+  {name:'LEED', authority:'U.S. Green Building Council', date:'Platinum, 2023'},
+  {name:'Passport Verification', authority:'Bangladesh Apparel Passport', date:'Issued 11 Jul 2026'}
 ];
 
 const trustTimeline = [
-  {year:'2016', title:'LEED Gold', desc:'First green-building certification for the Gazipur facility.'},
-  {year:'2018', title:'Zero Discharge', desc:'Closed-loop water treatment eliminates untreated effluent.'},
-  {year:'2021', title:'Women Leadership Program', desc:'Structured pathway lifts female representation in supervisory roles.'},
-  {year:'2023', title:'Solar Expansion', desc:'Rooftop solar array raises on-site renewable capacity.'},
-  {year:'2025', title:'Bangladesh Trust Mark', desc:'Awarded national recognition for sustained compliance and transparency.'}
-];
-
-const confidenceBadges = [
-  {name:'BGMEA', tip:'Registered and in good standing with the national garment manufacturers association.'},
-  {name:'BKMEA', tip:'Registered with the knitwear manufacturers and exporters association.'},
-  {name:'Apparel Passport', tip:'Identity and production data verified by Bangladesh Apparel Passport.'},
-  {name:'Trust Mark', tip:'Holds the Beyond the Stitch Trust Mark for sustained ethical performance.'},
-  {name:'LEED', tip:'Facility holds LEED Platinum green-building certification.'},
-  {name:'Product Journey', tip:'Every shipment stage logged and independently verifiable.'},
-  {name:'Worker Story', tip:'Worker testimonials reviewed and confirmed on-site.'},
-  {name:'ESG Verification', tip:'Environmental, social and governance metrics audited annually.'}
-];
-
-const capability = [
-  {k:'Product Specialization', v:'Knitwear, Sportswear'},
-  {k:'Monthly Capacity', v:'1.2M pcs'},
-  {k:'MOQ', v:'3,000 pcs'},
-  {k:'Lead Time', v:'45–60 days'},
-  {k:'Production Lines', v:'24 lines'},
-  {k:'Product Categories', v:'Tees, Polos, Basics'},
-  {k:'Export Markets', v:'EU, UK, N. America'},
-  {k:'Compliance Coverage', v:'6 certifications'}
-];
-
-const tours = [
-  {name:'Production Floor', dur:'2:14 tour'},
-  {name:'Warehouse', dur:'1:40 tour'},
-  {name:'Quality Lab', dur:'1:55 tour'},
-  {name:'Sample Room', dur:'1:20 tour'},
-  {name:'Office', dur:'1:05 tour'}
+  {year:'2018', title:'WRAP', desc:'Worldwide Responsible Accredited Production certification achieved.'},
+  {year:'2020', title:'LEED Platinum', desc:'Facility earns the highest tier of LEED green-building certification.'},
+  {year:'2022', title:'Higg FEM', desc:'Higg Facility Environmental Module verification completed.'},
+  {year:'2024', title:'Solar Expansion', desc:'Rooftop solar array raises on-site renewable capacity.'},
+  {year:'2026', title:'Beyond the Stitch Trust Mark', desc:'Awarded for sustained compliance and transparency.'}
 ];
 
 const makers = [
-  {name:'Rezaul Karim', bn:'রেজাউল করিম', role:'Production Director', years:'14 yrs experience', quote:'Every order is a promise we keep on time.', bio:'Oversees planning across 24 production lines and coordinates directly with merchandising on capacity commitments.', img:'https://ui-avatars.com/api/?name=Rezaul+Karim&background=11183A&color=6EEBFF&size=128'},
-  {name:'Nasrin Akter', bn:'নাসরিন আক্তার', role:'Quality Manager', years:'9 yrs experience', quote:'We inspect every shipment as if it represented Bangladesh.', bio:'Leads the AQL inspection program and the AI machine-vision defect-scanning rollout across all lines.', img:'https://ui-avatars.com/api/?name=Nasrin+Akter&background=11183A&color=6EEBFF&size=128'},
-  {name:'Tanvir Ahmed', bn:'তানভীর আহমেদ', role:'ESG Officer', years:'11 yrs experience', quote:'Transparency is the fastest way to earn trust.', bio:'Manages sustainability reporting, audit readiness, and the factory\'s LEED and Higg Index programs.', img:'https://ui-avatars.com/api/?name=Tanvir+Ahmed&background=11183A&color=6EEBFF&size=128'},
-  {name:'Shirin Sultana', bn:'শিরিন সুলতানা', role:'Sampling Manager', years:'7 yrs experience', quote:'A fast, accurate sample is how trust starts.', bio:'Runs the sample room, turning buyer specs into first proto within days of confirmation.', img:'https://ui-avatars.com/api/?name=Shirin+Sultana&background=11183A&color=6EEBFF&size=128'}
+  {name:'Rezaul Karim', bn:'রেজাউল করিম', role:'Production Director', years:'14 yrs experience', quote:'Every shipment represents our reputation.', img:'https://ui-avatars.com/api/?name=Rezaul+Karim&background=11183A&color=6EEBFF&size=128'},
+  {name:'Nasrin Akter', bn:'নাসরিন আক্তার', role:'Quality Manager', years:'9 yrs experience', quote:'We inspect every shipment as if it represented Bangladesh.', img:'https://ui-avatars.com/api/?name=Nasrin+Akter&background=11183A&color=6EEBFF&size=128'},
+  {name:'Tanvir Ahmed', bn:'তানভীর আহমেদ', role:'Sustainability Officer', years:'11 yrs experience', quote:'Transparency is the fastest way to earn trust.', img:'https://ui-avatars.com/api/?name=Tanvir+Ahmed&background=11183A&color=6EEBFF&size=128'},
+  {name:'Shirin Sultana', bn:'শিরিন সুলতানা', role:'Line Supervisor', years:'7 yrs experience', quote:'A steady line is how we keep every promise on time.', img:'https://ui-avatars.com/api/?name=Shirin+Sultana&background=11183A&color=6EEBFF&size=128'}
 ];
 
-const sustainMetrics = [
-  {label:'Renewable Energy Use', value:63},
-  {label:'Solar Usage', value:40},
-  {label:'Water Recycling', value:35},
-  {label:'Female Workforce', value:41},
-  {label:'Waste Diversion', value:78}
-];
-const sustainImpacts = [
-  {big:'2.1kg', sub:'CO₂ avoided per garment through renewable energy use.'},
-  {big:'420L', sub:'Rainwater harvested and reused per production day, in thousands.'},
-  {big:'12', sub:'Active carbon-reduction initiatives underway on-site.'}
-];
-
-const toolkitDocs = [
-  {name:'Capability Statement', meta:'PDF · 2 pages'},
-  {name:'Factory Brochure', meta:'PDF · 4 pages'},
-  {name:'Product Catalogue', meta:'PDF · 3 pages'},
-  {name:'Certification Package', meta:'PDF · certifications list'},
-  {name:'Sustainability Report', meta:'PDF · ESG metrics'},
-  {name:'Compliance Summary', meta:'PDF · audit status'},
-  {name:'Factory Presentation', meta:'PDF · overview deck'}
-];
-
-const journal = [
-  {cat:'Buyer Guide', title:'How to read a factory\'s compliance record', teaser:'What a valid certificate actually tells you, and what it doesn\'t.', full:'A certificate confirms a facility met a standard on the day it was audited. Buyers who look further — at renewal cadence, corrective-action history, and whether a factory shares raw audit data — get a far more reliable read on ongoing performance than the certificate alone provides.', rt:'4 min read'},
-  {cat:'ESG Update', title:'Renewable adoption across Bangladesh RMG', teaser:'Solar and grid-mix shifts are changing supplier sustainability scores.', full:'Rooftop solar and cleaner grid mixes are becoming a differentiator in supplier shortlisting. Factories publishing verified renewable-share figures are increasingly favored in RFQs from EU buyers with scope-3 reporting obligations.', rt:'5 min read'},
-  {cat:'Market Trend', title:'EU buyers are shortening supplier lists', teaser:'Fewer, deeper relationships are replacing broad sourcing panels.', full:'Consolidation toward fewer, higher-trust supplier relationships is reducing sourcing risk and audit overhead, at the cost of some price competition. Verified transparency tools are a key enabler of this shift.', rt:'3 min read'},
-  {cat:'Trade Policy', title:'What changing EU due-diligence rules mean for sourcing', teaser:'Documentation requirements are moving upstream of the factory gate.', full:'Buyers are increasingly expected to demonstrate traceability past tier-1 manufacturing into fabric and fiber origin, making digital product passports a practical compliance tool rather than a marketing extra.', rt:'6 min read'},
-  {cat:'Case Study', title:'Cutting sampling time without cutting corners', teaser:'One factory\'s route to a 10-day sample turnaround.', full:'A dedicated sample room, decoupled from bulk production scheduling, let this factory compress sample turnaround while keeping the same inspection standard applied to bulk orders.', rt:'4 min read'},
-  {cat:'Trade Fair', title:'Notes from this season\'s sourcing fairs', teaser:'What buyers were asking suppliers on the show floor.', full:'Traceability and verified sustainability data dominated buyer questions this season, ahead of price and even lead time — a shift from prior years.', rt:'3 min read'}
+const sustainSnapshot = [
+  {k:'Renewable Energy', v:'63%'},
+  {k:'Water Recycled', v:'35%'},
+  {k:'Female Workforce', v:'41%'},
+  {k:'Carbon Reduction', v:'2.1kg CO₂ / garment'},
+  {k:'Waste Diverted', v:'78%'},
+  {k:'LEED Rating', v:'Platinum'},
+  {k:'Trust Mark Status', v:'Active'}
 ];
 
 /* ================= HELPERS ================= */
-function esc(s){ return String(s); }
+function gaugeSVG(pct, color){
+  const r = 32, c = 2*Math.PI*r, off = c - (pct/100)*c;
+  return `<svg viewBox="0 0 76 76">
+    <circle cx="38" cy="38" r="${r}" fill="none" stroke="rgba(255,255,255,.08)" stroke-width="7"/>
+    <circle cx="38" cy="38" r="${r}" fill="none" stroke="${color}" stroke-width="7" stroke-linecap="round"
+      stroke-dasharray="${c}" stroke-dashoffset="${off}" transform="rotate(-90 38 38)"/>
+  </svg>`;
+}
 
 /* ================= PAGES ================= */
 const pages = [
-  { key:'summary', icon:'🎯', tab:'Overview', title:'Buyer Decision Summary', render: () => `
-      <div class="p-eyebrow">Buyer Readiness Index</div>
+  { key:'details', icon:'🛂', tab:'Passport Details', title:'Passport Details', render: () => `
+      <div class="p-eyebrow">Verified Digital Trust Document</div>
+      <div class="row"><span>Factory</span><span>${factory.name}</span></div>
+      <div class="row"><span>Product</span><span>${factory.product}</span></div>
+      <div class="row"><span>HS Code</span><span>${factory.hsCode}</span></div>
+      <div class="row"><span>Country of Origin</span><span>${factory.origin}</span></div>
+      <div class="row"><span>Production Batch</span><span>${factory.batch}</span></div>
+      <div class="row"><span>Issue Date</span><span>${factory.issueDate}</span></div>
+      <div class="row"><span>Verification Authority</span><span>${factory.authority}</span></div>
+      <div class="row"><span>Passport Status</span><span>${factory.status}</span></div>
+      <div class="row"><span>Trust Mark</span><span>Beyond the Stitch ✓</span></div>
+      <div class="row"><span>Passport ID</span><span>${factory.passportId}</span></div>
+  `},
+  { key:'dashboard', icon:'📊', tab:'Trust Dashboard', title:'Trust Dashboard', render: () => `
+      <div class="p-eyebrow">Buyer Readiness Score</div>
       <div class="score-hero">
         <div class="num">${factory.readiness}<small>/100</small></div>
         <div class="lbl">Overall sourcing confidence</div>
         <div class="metric-bar"><div class="fill" data-w="${factory.readiness}"></div></div>
       </div>
-      <div class="p-eyebrow" style="margin-top:1.2rem;">Best For</div>
-      <div class="tag-row">${factory.bestFor.map(t=>`<span class="tag-chip">✓ ${t}</span>`).join('')}</div>
-      <div class="p-eyebrow" style="margin-top:1.2rem;">At a Glance</div>
-      <div class="kpi-grid">${factory.kpis.map(k=>`<div class="kpi-card"><div class="k">${k.k}</div><div class="v">${k.v}</div></div>`).join('')}</div>
-  `},
-  { key:'match', icon:'🧮', tab:'Match Score', title:'Factory Match Score', render: () => `
-      <div class="p-eyebrow">Tell Us What You Need</div>
-      <p class="p-lead">Enter your sourcing preferences to see how well this factory fits.</p>
-      <form id="matchForm" style="margin-top:1rem;">
-        <div class="field">
-          <label>Product</label>
-          <select id="mf_product">
-            <option>Knitwear</option><option>Sportswear</option><option>Wovens</option><option>Denim</option>
-          </select>
-        </div>
-        <div class="field">
-          <label>Order Volume (pcs)</label>
-          <input id="mf_volume" type="number" placeholder="e.g. 5000">
-        </div>
-        <div class="field">
-          <label>Target Market</label>
-          <select id="mf_market"><option>EU</option><option>UK</option><option>North America</option><option>Other</option></select>
-        </div>
-        <div class="field">
-          <label>Required Lead Time</label>
-          <select id="mf_lead"><option>Standard (45–60 days)</option><option>Fast (30–45 days)</option><option>Flexible</option></select>
-        </div>
-        <div class="field">
-          <label>Required Certifications</label>
-          <div class="check-row" id="mf_certs">
-            ${['LEED','OEKO-TEX','ISO 9001','WRAP','BSCI'].map(c=>`<label class="check-chip"><input type="checkbox" value="${c}">${c}</label>`).join('')}
-          </div>
-        </div>
-        <div class="field">
-          <label>Sustainability Level</label>
-          <select id="mf_sustain"><option>Standard</option><option>High</option><option>Very High</option></select>
-        </div>
-        <button type="submit" class="open-btn full-btn">Calculate Match →</button>
-      </form>
-      <div id="matchResult"></div>
-  `},
-  { key:'journey', icon:'🧵', tab:'Journey', title:'Passport Details', render: () => `
-      <div class="p-eyebrow">Seven Verified Stages</div>
-      <p class="p-lead">This polo shirt was crafted through seven verified stages, plus final buyer handoff. Tap a stage to see verification detail.</p>
-      <div class="stamp-grid" style="margin-top:1rem;">
-        ${journeySteps.map((s,i)=>`
-          <div class="visa-stamp" data-idx="${i}" onclick="this.classList.toggle('open')">
-            <div class="num">${String(i+1).padStart(2,'0')}</div>
-            <div class="lbl">${s.label}</div>
-            <div class="det">${s.detail}<span class="meta">${s.loc} · ${s.date}</span></div>
-          </div>`).join('')}
+      <div class="gauge-grid">
+        <div class="gauge-card">${gaugeSVG(factory.trustScore,'var(--cyan)')}<div class="gv">${factory.trustScore}</div><div class="gl">Trust Score</div></div>
+        <div class="gauge-card">${gaugeSVG(factory.complianceScore,'var(--green)')}<div class="gv">${factory.complianceScore}</div><div class="gl">Compliance Score</div></div>
+        <div class="gauge-card">${gaugeSVG(factory.esgScore,'var(--violet)')}<div class="gv">${factory.esgScore}</div><div class="gl">ESG Performance</div></div>
+        <div class="gauge-card">${gaugeSVG(100,'var(--cyan)')}<div class="gv">Verified</div><div class="gl">Verification Status</div></div>
       </div>
-  `},
-  { key:'trust', icon:'🛡️', tab:'Trust', title:'Trust & Verification', render: () => `
-      <div class="p-eyebrow">Verification Cards</div>
-      <div class="verify-grid">
-        ${verifications.map((v,i)=>`
-          <div class="verify-card" data-idx="${i}" onclick="this.classList.toggle('open')">
-            <div class="top"><span class="badge-ic"></span><span class="name">${v.name}</span></div>
-            <div class="det">${v.authority}<br>${v.date}<br>Status: ${v.status}</div>
-          </div>`).join('')}
+      <div class="kpi-grid">
+        <div class="kpi-card"><div class="k">Export Experience</div><div class="v">${factory.exportYears}</div></div>
+        <div class="kpi-card"><div class="k">Response Time</div><div class="v">${factory.responseTime}</div></div>
+        <div class="kpi-card"><div class="k">Sampling Lead Time</div><div class="v">${factory.samplingLead}</div></div>
+        <div class="kpi-card"><div class="k">Passport Status</div><div class="v">${factory.status}</div></div>
       </div>
-      <div class="p-eyebrow" style="margin-top:1.4rem;">Trust Timeline</div>
+      <div class="p-eyebrow" style="margin-top:1.3rem;">Buyer Verification Panel</div>
+      <div class="confidence-grid">
+        ${verifications.map(v=>`<div class="conf-badge">✓ ${v.name}<div class="tip">${v.authority} · ${v.date}</div></div>`).join('')}
+      </div>
+      <div class="p-eyebrow" style="margin-top:1.3rem;">Trust Timeline</div>
       <div class="tl">
         ${trustTimeline.map(t=>`
           <div class="tl-item">
@@ -768,35 +592,22 @@ const pages = [
             <div class="tl-desc">${t.desc}</div>
           </div>`).join('')}
       </div>
-      <div class="p-eyebrow" style="margin-top:1.4rem;">Buyer Confidence Panel</div>
-      <div class="confidence-grid">
-        ${confidenceBadges.map(b=>`<div class="conf-badge">✓ ${b.name}<div class="tip">${b.tip}</div></div>`).join('')}
-      </div>
   `},
-  { key:'factory', icon:'🏭', tab:'Factory', title:'Capability Profile', render: () => `
-      <div class="p-eyebrow">Facility Snapshot</div>
-      <div class="fact-imgs">
-        <img src="https://images.unsplash.com/photo-1615461066841-6116e61058f4?q=80&w=800&auto=format&fit=crop" alt="Factory floor">
-        <img src="https://images.unsplash.com/photo-1581094794329-c8112a89af12?q=80&w=500&auto=format&fit=crop" alt="Machinery">
-      </div>
-      <div class="row"><span>Name</span><span>${factory.name}</span></div>
-      <div class="row"><span>Location</span><span>${factory.location}</span></div>
-      <div class="p-eyebrow" style="margin-top:1.1rem;">Capability</div>
-      <div class="kpi-grid">${capability.map(c=>`<div class="kpi-card"><div class="k">${c.k}</div><div class="v">${c.v}</div></div>`).join('')}</div>
-      <div class="p-eyebrow" style="margin-top:1.2rem;">Virtual Factory Experience</div>
-      <div class="tour-grid">
-        ${tours.map((t,i)=>`
-          <div class="tour-card" onclick="showTourNote(${i})">
-            <div class="play">▶</div>
-            <div class="tname">${t.name}</div>
-            <div class="tdur">${t.dur}</div>
+  { key:'journey', icon:'🧵', tab:'Product Journey', title:'Verified Product Journey', render: () => `
+      <div class="p-eyebrow">Seven Verified Stages</div>
+      <p class="p-lead">Tap a stage to see its verification detail.</p>
+      <div class="stamp-grid" style="margin-top:1rem;">
+        ${journeySteps.map((s,i)=>`
+          <div class="visa-stamp" data-idx="${i}" onclick="this.classList.toggle('open')">
+            <div class="num">${String(i+1).padStart(2,'0')}</div>
+            <div class="lbl">${s.label}</div>
+            <div class="badge">✓ Verified</div>
+            <div class="det">${s.detail}<span class="meta">${s.loc} · ${s.date}</span></div>
           </div>`).join('')}
       </div>
-      <div class="tour-note" id="tourNote">Select a tour above to preview what buyers see before scheduling a physical visit.</div>
   `},
-  { key:'makers', icon:'👥', tab:'Makers', title:'কারিগরের গল্প', render: () => `
-      <div class="p-eyebrow">Behind the Craft</div>
-      <p class="p-lead">The people responsible for what this passport verifies.</p>
+  { key:'makers', icon:'👥', tab:'Meet the Makers', title:'কারিগরের গল্প', render: () => `
+      <div class="p-eyebrow">Meet the Makers</div>
       <div style="margin-top:.6rem;">
         ${makers.map((m,i)=>`
           <div class="maker-item" data-idx="${i}" onclick="this.classList.toggle('open')">
@@ -805,79 +616,31 @@ const pages = [
               <h4>${m.name} <span class="bn" style="color:var(--grey);font-size:.7rem;">· ${m.bn}</span></h4>
               <div class="role">${m.role} — ${m.years}</div>
               <div class="quote">"${m.quote}"</div>
-              <div class="bio">${m.bio}</div>
             </div>
           </div>`).join('')}
       </div>
   `},
-  { key:'sustain', icon:'🌱', tab:'Sustainability', title:'Trust Dashboard', render: () => `
-      <div class="p-eyebrow">Environmental Performance</div>
-      <div style="margin-top:1rem;">
-        ${sustainMetrics.map(t=>`
-          <div class="metric">
-            <div class="metric-top"><span>${t.label}</span><span class="n">${t.value}%</span></div>
-            <div class="metric-bar"><div class="fill" data-w="${t.value}"></div></div>
-          </div>`).join('')}
-      </div>
-      <div class="p-eyebrow" style="margin-top:1rem;">Impact Snapshot</div>
-      <div style="margin-top:.8rem;">
-        ${sustainImpacts.map(i=>`<div class="impact-item"><div class="big">${i.big}</div><div class="sub">${i.sub}</div></div>`).join('')}
+  { key:'sustain', icon:'🌱', tab:'Sustainability', title:'Sustainability Snapshot', render: () => `
+      <div class="p-eyebrow">Verified Sustainability Metrics</div>
+      <div class="snap-grid">
+        ${sustainSnapshot.map(s=>`<div class="snap-card"><div class="k">${s.k}</div><div class="v">${s.v}</div></div>`).join('')}
       </div>
   `},
-  { key:'toolkit', icon:'📥', tab:'Toolkit', title:'Buyer Toolkit', render: () => `
-      <div class="p-eyebrow">One-Click Downloads</div>
-      <p class="p-lead">Everything your procurement team needs, generated on request.</p>
-      <div class="doc-list">
-        ${toolkitDocs.map((d,i)=>`
-          <div class="doc-row">
-            <div><div class="dname">${d.name}</div><div class="dmeta">${d.meta}</div></div>
-            <button class="dl-btn" onclick="downloadDoc(${i})">Download ↓</button>
-          </div>`).join('')}
-      </div>
-  `},
-  { key:'journal', icon:'📰', tab:'Journal', title:'Beyond the Stitch Journal', render: () => `
-      <div class="p-eyebrow">Sourcing Insight</div>
-      <p class="p-lead">Guides and updates for buyers sourcing from Bangladesh.</p>
-      <div style="margin-top:.9rem;">
-        ${journal.map((a,i)=>`
-          <div class="article-card" data-idx="${i}" onclick="this.classList.toggle('open')">
-            <div class="cat">${a.cat}</div>
-            <div class="atitle">${a.title}</div>
-            <div class="teaser">${a.teaser}</div>
-            <div class="full">${a.full}</div>
-            <div class="rt">${a.rt}</div>
-          </div>`).join('')}
-      </div>
-  `},
-  { key:'connect', icon:'📞', tab:'Connect', title:'Connect & Workspace', render: () => `
-      <div class="p-eyebrow">Reach the Factory</div>
-      <div class="row"><span>Merchandiser</span><span>Tanvir Ahmed</span></div>
-      <div class="row"><span>Email</span><span>trade@meridianknit.example</span></div>
-      <div class="row"><span>Response Time</span><span>&lt; 24 hrs</span></div>
+  { key:'actions', icon:'📞', tab:'Buyer Actions', title:'Buyer Actions', render: () => `
+      <div class="p-eyebrow">Ready to Move Forward</div>
+      <p class="p-lead">This product and factory are verified. Take the next step.</p>
       <div class="connect-btns">
-        <button class="cbtn primary" onclick="openSub('sample')">Request Sample →</button>
-        <button class="cbtn" onclick="openSub('meeting')">Schedule Meeting →</button>
-        <button class="cbtn" onclick="openSub('contact')">Contact Factory →</button>
-      </div>
-      <div class="section-div">
-        <div class="p-eyebrow">Buyer Workspace</div>
-        <div class="connect-btns">
-          <button class="cbtn" id="saveBtn" onclick="toggleSave()">Save Factory</button>
-          <button class="cbtn" id="shortlistBtn" onclick="toggleShortlist()">Add to Shortlist</button>
-          <button class="cbtn" onclick="openSub('notes')">Add Internal Notes →</button>
-          <button class="cbtn" onclick="openSub('share')">Share with Procurement Team →</button>
-          <button class="cbtn ghost" onclick="downloadFullReport()">Export Full PDF Report ↓</button>
-          <button class="cbtn ghost" onclick="openCompare()">Compare Factories →</button>
-        </div>
+        <button class="cbtn primary" onclick="openSub('sample')">Request Samples →</button>
+        <button class="cbtn" onclick="openSub('tour')">Schedule Virtual Tour →</button>
+        <button class="cbtn" onclick="downloadCapabilityDeck()">Download Capability Deck ↓</button>
+        <button class="cbtn" onclick="openSub('contact')">Contact Supplier →</button>
+        <button class="cbtn ghost" onclick="goToFactoryProfile()">View Full Factory Intelligence Profile →</button>
       </div>
   `}
 ];
 
 /* ================= STATE ================= */
 let current = 0;
-let saved = false;
-let shortlisted = true; // already in shortlist from BAI by default
-let workspaceNote = '';
 const tabsEl = document.getElementById('tabs');
 const pageBody = document.getElementById('pageBody');
 const pageTitle = document.getElementById('pageTitle');
@@ -911,22 +674,10 @@ function renderPage(i){
   prevBtn.disabled = i===0;
   nextBtn.disabled = i===pages.length-1;
 
-  if(p.key==='summary' || p.key==='sustain'){
+  if(p.key==='dashboard'){
     requestAnimationFrame(()=>{
       pageBody.querySelectorAll('.fill').forEach(f=>{ f.style.width = f.dataset.w+'%'; });
     });
-  }
-  if(p.key==='match'){
-    document.getElementById('matchForm').addEventListener('submit', calculateMatch);
-    document.querySelectorAll('#mf_certs .check-chip').forEach(chip=>{
-      chip.addEventListener('click',()=> setTimeout(()=>chip.classList.toggle('on', chip.querySelector('input').checked),0));
-    });
-  }
-  if(p.key==='connect'){
-    document.getElementById('saveBtn').textContent = saved ? 'Saved ✓' : 'Save Factory';
-    document.getElementById('saveBtn').classList.toggle('on', saved);
-    document.getElementById('shortlistBtn').textContent = shortlisted ? 'On Shortlist ✓' : 'Add to Shortlist';
-    document.getElementById('shortlistBtn').classList.toggle('on', shortlisted);
   }
 }
 function goTo(i){
@@ -963,111 +714,40 @@ function showCover(){
   renderPage(0);
 }
 
-/* ================= MATCH SCORE CALC ================= */
-function calculateMatch(e){
-  e.preventDefault();
-  const product = document.getElementById('mf_product').value;
-  const volume = parseInt(document.getElementById('mf_volume').value)||0;
-  const market = document.getElementById('mf_market').value;
-  const lead = document.getElementById('mf_lead').value;
-  const sustain = document.getElementById('mf_sustain').value;
-  const chosenCerts = Array.from(document.querySelectorAll('#mf_certs input:checked')).map(c=>c.value);
-
-  let score = 55;
-  let reasons = [];
-
-  if(product==='Knitwear' || product==='Sportswear'){ score+=15; reasons.push('Strong '+product.toLowerCase()+' production capability'); }
-  else { score+=5; reasons.push('Can produce '+product.toLowerCase()+' via partner lines'); }
-
-  if(volume===0){ /* no info */ }
-  else if(volume>=3000){ score+=10; reasons.push('Meets required MOQ of 3,000 pcs'); }
-  else { score-=8; reasons.push('Below standard MOQ — may need a surcharge'); }
-
-  if(market==='EU'){ score+=10; reasons.push('Established EU export lane via Chattogram'); }
-  else if(market==='UK' || market==='North America'){ score+=6; reasons.push('Active shipping experience to '+market); }
-
-  if(lead==='Flexible'){ score+=8; reasons.push('Flexible scheduling improves lead-time fit'); }
-  else if(lead==='Standard (45–60 days)'){ score+=5; reasons.push('Matches factory\'s standard 45–60 day cycle'); }
-  else { score-=4; reasons.push('Fast lead time requested — may require priority slotting'); }
-
-  const factoryCerts = ['LEED','OEKO-TEX','ISO 9001','WRAP','BSCI'];
-  chosenCerts.forEach(c=>{
-    if(factoryCerts.includes(c)){ score+=3; reasons.push(c+' certification confirmed'); }
-  });
-
-  if(sustain==='High'){ score+=8; reasons.push('Strong ESG profile matches high sustainability bar'); }
-  else if(sustain==='Very High'){ score+=10; reasons.push('LEED Platinum facility supports very high sustainability needs'); }
-  else { score+=4; reasons.push('Meets standard sustainability expectations'); }
-
-  score = Math.max(20, Math.min(99, score));
-
-  const resultEl = document.getElementById('matchResult');
-  resultEl.innerHTML = `
-    <div class="score-hero" style="margin-top:1.3rem;">
-      <div class="num">${score}<small>%</small></div>
-      <div class="lbl">Factory Match Score</div>
-      <div class="metric-bar"><div class="fill" data-w="${score}"></div></div>
-    </div>
-    <div class="p-eyebrow" style="margin-top:1rem;">Why This Score</div>
-    <ul class="reason-list">${reasons.map(r=>`<li>${r}</li>`).join('')}</ul>
-  `;
-  requestAnimationFrame(()=>{
-    resultEl.querySelectorAll('.fill').forEach(f=>{ f.style.width = f.dataset.w+'%'; });
-  });
-}
-
-/* ================= TOUR NOTE ================= */
-function showTourNote(i){
-  document.getElementById('tourNote').textContent =
-    `${tours[i].name} · ${tours[i].dur} — full video streams from the factory's Bangladesh Apparel Intelligence profile.`;
-}
-
-/* ================= WORKSPACE TOGGLES ================= */
-function toggleSave(){
-  saved = !saved;
-  const b = document.getElementById('saveBtn');
-  b.textContent = saved ? 'Saved ✓' : 'Save Factory';
-  b.classList.toggle('on', saved);
-}
-function toggleShortlist(){
-  shortlisted = !shortlisted;
-  const b = document.getElementById('shortlistBtn');
-  b.textContent = shortlisted ? 'On Shortlist ✓' : 'Add to Shortlist';
-  b.classList.toggle('on', shortlisted);
+/* ================= BRIDGE TO BAI ================= */
+function goToFactoryProfile(){
+  alert('This bridges back to the Factory Intelligence Profile for ' + factory.name + ' inside Bangladesh Apparel Intelligence.');
 }
 
 /* ================= SUB-PAGES (forms) ================= */
 const subPages = {
   sample:{
-    title:'Request Sample',
+    title:'Request Samples',
     fields:[
       {id:'name', label:'Full Name', type:'text', placeholder:'Your name'},
       {id:'company', label:'Company', type:'text', placeholder:'Company name'},
       {id:'email', label:'Email', type:'email', placeholder:'you@company.com'},
       {id:'address', label:'Shipping Address', type:'textarea', placeholder:'Street, city, country, postal code'},
-      {id:'qty', label:'Quantity (units)', type:'text', placeholder:'e.g. 50'},
-      {id:'notes', label:'Notes (optional)', type:'textarea', placeholder:'Sizes, colors, special requirements'}
+      {id:'qty', label:'Quantity (units)', type:'text', placeholder:'e.g. 50'}
     ],
     confirmTitle:'SAMPLE<br>REQUESTED',
     confirmMsg:'Meridian Knitwear will confirm sample availability and shipping cost within 24 hours.',
     refPrefix:'SPL'
   },
-  meeting:{
-    title:'Schedule Meeting',
+  tour:{
+    title:'Schedule Virtual Tour',
     fields:[
       {id:'name', label:'Full Name', type:'text', placeholder:'Your name'},
       {id:'email', label:'Email', type:'email', placeholder:'you@company.com'},
       {id:'date', label:'Preferred Date', type:'date'},
-      {id:'time', label:'Preferred Time', type:'time'},
-      {id:'timezone', label:'Timezone', type:'text', placeholder:'e.g. CET, GMT+1'},
-      {id:'topic', label:'Topic', type:'textarea', placeholder:'What would you like to discuss?'}
+      {id:'time', label:'Preferred Time', type:'time'}
     ],
-    confirmTitle:'MEETING<br>REQUESTED',
-    confirmMsg:'Tanvir Ahmed will confirm your meeting slot by email shortly.',
-    refPrefix:'MTG'
+    confirmTitle:'TOUR<br>REQUESTED',
+    confirmMsg:'The factory team will confirm your virtual tour slot by email shortly.',
+    refPrefix:'TUR'
   },
   contact:{
-    title:'Contact Factory',
+    title:'Contact Supplier',
     fields:[
       {id:'name', label:'Full Name', type:'text', placeholder:'Your name'},
       {id:'company', label:'Company', type:'text', placeholder:'Company name'},
@@ -1077,25 +757,6 @@ const subPages = {
     confirmTitle:'MESSAGE<br>RECEIVED',
     confirmMsg:'The merchandising team typically responds within 24 hours.',
     refPrefix:'MSG'
-  },
-  notes:{
-    title:'Internal Notes',
-    fields:[
-      {id:'note', label:'Notes (visible to your team only)', type:'textarea', placeholder:'e.g. Strong ESG fit for our SS27 collection. Follow up on sampling cost.'}
-    ],
-    confirmTitle:'NOTE<br>SAVED',
-    confirmMsg:'Your note is attached to this factory in your workspace.',
-    refPrefix:'NOTE'
-  },
-  share:{
-    title:'Share with Procurement Team',
-    fields:[
-      {id:'emails', label:'Teammate Emails', type:'text', placeholder:'name@company.com, name2@company.com'},
-      {id:'message', label:'Message (optional)', type:'textarea', placeholder:'Add context for your team'}
-    ],
-    confirmTitle:'SHARED<br>WITH TEAM',
-    confirmMsg:'Your teammates will receive this Passport link with your notes attached.',
-    refPrefix:'SHR'
   }
 };
 
@@ -1103,7 +764,7 @@ const subOverlay = document.getElementById('subOverlay');
 
 function fieldHTML(f){
   if(f.type==='textarea'){
-    return `<div class="field"><label>${f.label}</label><textarea id="f_${f.id}" placeholder="${f.placeholder||''}">${f.id==='note'?workspaceNote:''}</textarea></div>`;
+    return `<div class="field"><label>${f.label}</label><textarea id="f_${f.id}" placeholder="${f.placeholder||''}"></textarea></div>`;
   }
   return `<div class="field"><label>${f.label}</label><input id="f_${f.id}" type="${f.type}" placeholder="${f.placeholder||''}"></div>`;
 }
@@ -1121,7 +782,6 @@ function openSub(key){
     </div>`;
   document.getElementById('subForm').addEventListener('submit',(e)=>{
     e.preventDefault();
-    if(key==='notes'){ workspaceNote = document.getElementById('f_note').value; }
     submitSub(key,cfg);
   });
   subOverlay.classList.add('open');
@@ -1140,113 +800,37 @@ function submitSub(key,cfg){
       <button class="nav-btn" style="margin-top:1.6rem;" onclick="closeSub()">Done</button>
     </div>`;
 }
-document.addEventListener('keydown',(e)=>{ if(e.key==='Escape'){ closeSub(); closeCompare(); } });
+document.addEventListener('keydown',(e)=>{ if(e.key==='Escape'){ closeSub(); } });
 
-/* ================= PDF GENERATORS ================= */
-function pdfHeader(doc, subtitle){
-  let y = 22;
-  doc.setFont('helvetica','bold'); doc.setFontSize(18);
-  doc.text(factory.name,20,y); y+=8;
-  doc.setFont('helvetica','normal'); doc.setFontSize(11);
-  doc.text(subtitle,20,y); y+=6;
-  doc.setDrawColor(150); doc.line(20,y,190,y); y+=10;
-  return y;
-}
-function downloadDoc(i){
-  try{
-    const { jsPDF } = window.jspdf;
-    const doc = new jsPDF();
-    const d = toolkitDocs[i];
-    let y = pdfHeader(doc, d.name + ' — Bangladesh Apparel Passport');
-    doc.setFontSize(10.5);
-
-    if(d.name==='Capability Statement' || d.name==='Factory Presentation'){
-      capability.forEach(c=>{ doc.setFont('helvetica','bold'); doc.text(c.k+':',20,y); doc.setFont('helvetica','normal'); doc.text(String(c.v),75,y); y+=8; });
-    } else if(d.name==='Factory Brochure' || d.name==='Product Catalogue'){
-      doc.text('Location: '+factory.location,20,y); y+=8;
-      factory.kpis.forEach(k=>{ doc.text(k.k+': '+k.v,20,y); y+=7; });
-    } else if(d.name==='Certification Package'){
-      certs.forEach(c=>{ doc.text('• '+c,20,y); y+=7; });
-    } else if(d.name==='Sustainability Report'){
-      sustainMetrics.forEach(m=>{ doc.text(m.label+': '+m.value+'%',20,y); y+=7; });
-      y+=3;
-      sustainImpacts.forEach(m=>{ doc.text(m.big+' — '+m.sub,20,y,{maxWidth:160}); y+=10; });
-    } else if(d.name==='Compliance Summary'){
-      verifications.forEach(v=>{ doc.text(v.name+' — '+v.authority+' ('+v.date+')',20,y,{maxWidth:160}); y+=8; });
-    }
-
-    doc.save(d.name.replace(/\\s+/g,'-')+'.pdf');
-  }catch(err){
-    alert('The PDF generator could not load. Check your internet connection and try again.');
-  }
-}
-function downloadFullReport(){
-  try{
-    const { jsPDF } = window.jspdf;
-    const doc = new jsPDF();
-    let y = pdfHeader(doc, 'Full Buyer Decision Report');
-    doc.setFontSize(12); doc.setFont('helvetica','bold'); doc.text('Buyer Readiness Index: '+factory.readiness+'/100',20,y); y+=10;
-
-    doc.setFontSize(11); doc.text('At a Glance',20,y); y+=7;
-    doc.setFont('helvetica','normal'); doc.setFontSize(10);
-    factory.kpis.forEach(k=>{ doc.text(k.k+': '+k.v,20,y); y+=6.5; });
-
-    y+=4; doc.setFont('helvetica','bold'); doc.setFontSize(11); doc.text('Capability',20,y); y+=7;
-    doc.setFont('helvetica','normal'); doc.setFontSize(10);
-    capability.forEach(c=>{ doc.text(c.k+': '+c.v,20,y); y+=6.5; if(y>270){doc.addPage();y=20;} });
-
-    y+=4; doc.setFont('helvetica','bold'); doc.setFontSize(11); doc.text('Trust & Verification',20,y); y+=7;
-    doc.setFont('helvetica','normal'); doc.setFontSize(10);
-    verifications.forEach(v=>{ doc.text(v.name+' — '+v.authority,20,y); y+=6.5; if(y>270){doc.addPage();y=20;} });
-
-    if(workspaceNote){
-      y+=4; doc.setFont('helvetica','bold'); doc.setFontSize(11); doc.text('Internal Notes',20,y); y+=7;
-      doc.setFont('helvetica','normal'); doc.setFontSize(10);
-      doc.text(workspaceNote,20,y,{maxWidth:160});
-    }
-
-    doc.save('Bangladesh-Apparel-Passport-Full-Report.pdf');
-  }catch(err){
-    alert('The PDF generator could not load. Check your internet connection and try again.');
-  }
-}
-
-/* ================= COMPARE ================= */
-const compareSet = [
-  {name:'Meridian Knitwear Ltd.', moq:'3,000 pcs', capacity:'1.2M/mo', lead:'45–60d', sampling:'10–14d', categories:'Tees, Polos, Basics', markets:'EU, UK, N. America', leed:'Platinum', compliance:'6 certs', readiness:'91', match:'—', exportYrs:'12 yrs', sustain:'High'},
-  {name:'Everest Apparels Ltd.', moq:'5,000 pcs', capacity:'900K/mo', lead:'50–65d', sampling:'14–18d', categories:'Wovens, Denim', markets:'EU, N. America', leed:'Gold', compliance:'5 certs', readiness:'84', match:'—', exportYrs:'9 yrs', sustain:'Medium'},
-  {name:'Green Loom Textiles', moq:'2,000 pcs', capacity:'650K/mo', lead:'40–55d', sampling:'8–12d', categories:'Knitwear, Basics', markets:'EU, UK', leed:'Platinum', compliance:'6 certs', readiness:'88', match:'—', exportYrs:'7 yrs', sustain:'Very High'}
-];
-const compareModal = document.getElementById('compareModal');
-function buildCompareTable(){
-  const rows = [
-    ['MOQ','moq'],['Monthly Capacity','capacity'],['Lead Time','lead'],['Sampling Time','sampling'],
-    ['Product Categories','categories'],['Markets Served','markets'],['LEED Level','leed'],
-    ['Compliance Coverage','compliance'],['Buyer Readiness','readiness'],['Export Experience','exportYrs'],['Sustainability','sustain']
-  ];
-  let html = '<thead><tr><th>Metric</th>' + compareSet.map(f=>`<th>${f.name}</th>`).join('') + '</tr></thead><tbody>';
-  rows.forEach(r=>{
-    html += `<tr><td>${r[0]}</td>` + compareSet.map(f=>`<td>${f[r[1]]}</td>`).join('') + '</tr>';
-  });
-  html += '</tbody>';
-  document.getElementById('ctable').innerHTML = html;
-}
-function openCompare(){ buildCompareTable(); compareModal.classList.add('open'); }
-function closeCompare(){ compareModal.classList.remove('open'); }
-document.getElementById('compareCnt').textContent = compareSet.length;
-function exportComparison(){
+/* ================= PDF: Capability Deck ================= */
+function downloadCapabilityDeck(){
   try{
     const { jsPDF } = window.jspdf;
     const doc = new jsPDF();
     let y = 22;
-    doc.setFont('helvetica','bold'); doc.setFontSize(16); doc.text('Smart Factory Comparison',20,y); y+=10;
+    doc.setFont('helvetica','bold'); doc.setFontSize(18);
+    doc.text(factory.name,20,y); y+=8;
+    doc.setFont('helvetica','normal'); doc.setFontSize(11);
+    doc.text('Bangladesh Apparel Passport — Capability Deck',20,y); y+=6;
+    doc.setDrawColor(150); doc.line(20,y,190,y); y+=10;
+
+    doc.setFontSize(12); doc.setFont('helvetica','bold'); doc.text('Passport Details',20,y); y+=8;
     doc.setFont('helvetica','normal'); doc.setFontSize(10);
-    compareSet.forEach(f=>{
-      doc.setFont('helvetica','bold'); doc.text(f.name,20,y); y+=6;
-      doc.setFont('helvetica','normal');
-      doc.text('MOQ '+f.moq+' · Capacity '+f.capacity+' · Lead '+f.lead+' · Readiness '+f.readiness,20,y,{maxWidth:170}); y+=10;
-    });
-    doc.save('Factory-Comparison-Report.pdf');
+    [['Product',factory.product],['HS Code',factory.hsCode],['Country of Origin',factory.origin],
+     ['Production Batch',factory.batch],['Issue Date',factory.issueDate],['Verification Authority',factory.authority],
+     ['Passport Status',factory.status],['Passport ID',factory.passportId]].forEach(r=>{ doc.text(r[0]+': '+r[1],20,y); y+=6.5; });
+
+    y+=4; doc.setFont('helvetica','bold'); doc.setFontSize(12); doc.text('Trust Dashboard',20,y); y+=8;
+    doc.setFont('helvetica','normal'); doc.setFontSize(10);
+    [['Buyer Readiness Score',factory.readiness+'/100'],['Trust Score',factory.trustScore],['Compliance Score',factory.complianceScore],
+     ['ESG Performance',factory.esgScore],['Export Experience',factory.exportYears],['Response Time',factory.responseTime],
+     ['Sampling Lead Time',factory.samplingLead]].forEach(r=>{ doc.text(r[0]+': '+r[1],20,y); y+=6.5; if(y>270){doc.addPage();y=20;} });
+
+    y+=4; doc.setFont('helvetica','bold'); doc.setFontSize(12); doc.text('Verified By',20,y); y+=8;
+    doc.setFont('helvetica','normal'); doc.setFontSize(10);
+    verifications.forEach(v=>{ doc.text('✓ '+v.name+' — '+v.authority,20,y,{maxWidth:170}); y+=7; if(y>270){doc.addPage();y=20;} });
+
+    doc.save('Bangladesh-Apparel-Passport-Capability-Deck.pdf');
   }catch(err){
     alert('The PDF generator could not load. Check your internet connection and try again.');
   }
